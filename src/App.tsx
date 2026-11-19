@@ -1,47 +1,56 @@
+// src/App.tsx
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Navigate, Route } from 'react-router-dom';
 
-import Home from './pages/Home';
-
-/* Core CSS required for Ionic components to work properly */
+/* CSS core de Ionic */
 import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils that can be commented out */
 import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+/* Tema Onturn (siempre después de los CSS de Ionic) */
+import './theme/onturn.css';
 
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
+import Branches from './pages/Admin/Branches';
+import Positions from './pages/Admin/Positions';
+import Dashboard from './pages/Admin/Dashboard';
+import Monitoring from './pages/Admin/Monitoring';
+import Workdays from './pages/Admin/Workdays';
+import MyTurn from './pages/Client/MyTurn';
+import RequestTurn from './pages/Client/RequestTurn';
+import Login from './pages/Login';
+import ServicePanel from './pages/Operator/ServicePanel';
+import RoomScreen from './pages/RoomScreen';
 
-/* Theme variables */
-import './theme/variables.css';
-
-setupIonicReact();
+setupIonicReact({ mode: 'md' });
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route path="/home" element={<Home />} />
-        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/login" element={<Login/>} />
+        {/* Administrador */}
+        <Route path="/manage" element={<Navigate to="/login" replace />} />
+        <Route path="/manage/dashboard" element={<Dashboard/>} />
+        <Route path="/manage/monitoring" element={<Monitoring/>} />
+        <Route path="/manage/workdays" element={<Workdays/>} />
+        <Route path="/manage/branches" element={<Branches/>} />
+
+        {/* Operador */}
+        <Route path="/operador" element={<ServicePanel/>} />
+
+        {/* Cliente (sin cuenta) */}
+        <Route path="/request" element={<RequestTurn/>} />
+        <Route path="/me" element={<MyTurn/>} />
+
+        {/* Pantalla pública */}
+        <Route path="/room" element={<RoomScreen/>} />
+
+        <Route path="/" element={<Navigate to="/login" replace />} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

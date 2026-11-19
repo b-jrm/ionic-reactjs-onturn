@@ -1,0 +1,399 @@
+/* ==========================================================================
+   Sistema de Gestión de Turnos - Tema Ionic React
+   Archivo: src/theme/variables.css
+   Importar en src/index.tsx o App.tsx: import './theme/variables.css';
+   ========================================================================== */
+
+:root {
+  /* ----- Tipografía ----- */
+  --ion-font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* ----- Colores base de Ionic ----- */
+
+  /* Primary: azul institucional */
+  --ion-color-primary: #1e6fd9;
+  --ion-color-primary-rgb: 30, 111, 217;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #1a61bf;
+  --ion-color-primary-tint: #3560dd;
+
+  /* Secondary: turquesa */
+  --ion-color-secondary: #0fa3a3;
+  --ion-color-secondary-rgb: 15, 163, 163;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #0d8f8f;
+  --ion-color-secondary-tint: #27acac;
+
+  /* Tertiary: violeta */
+  --ion-color-tertiary: #6b4fd8;
+  --ion-color-tertiary-rgb: 107, 79, 216;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #5e46bf;
+  --ion-color-tertiary-tint: #7a61dd;
+
+  /* Success */
+  --ion-color-success: #2dd36f;
+  --ion-color-success-rgb: 45, 211, 111;
+  --ion-color-success-contrast: #000000;
+  --ion-color-success-contrast-rgb: 0, 0, 0;
+  --ion-color-success-shade: #28ba62;
+  --ion-color-success-tint: #42d77d;
+
+  /* Warning */
+  --ion-color-warning: #ffc409;
+  --ion-color-warning-rgb: 255, 196, 9;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0ac08;
+  --ion-color-warning-tint: #ffca22;
+
+  /* Danger */
+  --ion-color-danger: #eb445a;
+  --ion-color-danger-rgb: 235, 68, 90;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cf3c4f;
+  --ion-color-danger-tint: #ed576b;
+
+  /* Medium */
+  --ion-color-medium: #8a94a6;
+  --ion-color-medium-rgb: 138, 148, 166;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #79828f;
+  --ion-color-medium-tint: #949dae;
+
+  /* Light */
+  --ion-color-light: #f4f6fa;
+  --ion-color-light-rgb: 244, 246, 250;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d7d8dc;
+  --ion-color-light-tint: #f5f6fb;
+
+  /* Dark */
+  --ion-color-dark: #1f2937;
+  --ion-color-dark-rgb: 31, 41, 55;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #1b2431;
+  --ion-color-dark-tint: #353f4b;
+
+  /* ----- Fondos y textos globales ----- */
+  --ion-background-color: #f4f6fa;
+  --ion-background-color-rgb: 244, 246, 250;
+  --ion-text-color: #1f2937;
+  --ion-text-color-rgb: 31, 41, 55;
+  --ion-border-color: #e2e8f0;
+  --ion-item-background: #ffffff;
+  --ion-card-background: #ffffff;
+  --ion-toolbar-background: #ffffff;
+  --ion-tab-bar-background: #ffffff;
+
+  /* ======================================================================
+     Variables personalizadas: Gestión de Turnos
+     ====================================================================== */
+
+  /* ----- Estados del turno ----- */
+  --turno-espera: #ffc409;            /* En espera */
+  --turno-espera-bg: #fff8e1;
+  --turno-llamado: #1e6fd9;           /* Llamado / próximo */
+  --turno-llamado-bg: #e6f0fc;
+  --turno-atencion: #6b4fd8;          /* En atención */
+  --turno-atencion-bg: #efebfb;
+  --turno-finalizado: #2dd36f;        /* Finalizado */
+  --turno-finalizado-bg: #e6f9ee;
+  --turno-cancelado: #8a94a6;         /* Cancelado */
+  --turno-cancelado-bg: #eef0f4;
+  --turno-ausente: #eb445a;           /* No se presentó */
+  --turno-ausente-bg: #fdeaed;
+  --turno-prioritario: #ff7a1a;       /* Atención preferencial */
+  --turno-prioritario-bg: #fff0e3;
+
+  /* ----- Módulos / ventanillas ----- */
+  --modulo-disponible: #2dd36f;
+  --modulo-ocupado: #eb445a;
+  --modulo-pausa: #ffc409;
+  --modulo-cerrado: #8a94a6;
+
+  /* ----- Pantalla pública (display de turnos / TV) ----- */
+  --display-bg: #0b1b33;
+  --display-surface: #12294d;
+  --display-text: #ffffff;
+  --display-turno-actual: #ffd54a;
+  --display-turno-size: clamp(4rem, 12vw, 10rem);
+  --display-modulo-size: clamp(1.5rem, 4vw, 3rem);
+
+  /* ----- Ticket / número de turno ----- */
+  --ticket-bg: #ffffff;
+  --ticket-border: #cbd5e1;
+  --ticket-numero-size: 3rem;
+  --ticket-radius: 16px;
+
+  /* ----- Espaciados ----- */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* ----- Bordes y sombras ----- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.10);
+  --shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.15);
+
+  /* ----- Transiciones ----- */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+
+/* ==========================================================================
+   Clases de color Ionic (necesarias para usar color="primary", etc.)
+   ========================================================================== */
+.ion-color-primary {
+  --ion-color-base: var(--ion-color-primary);
+  --ion-color-base-rgb: var(--ion-color-primary-rgb);
+  --ion-color-contrast: var(--ion-color-primary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-primary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-primary-shade);
+  --ion-color-tint: var(--ion-color-primary-tint);
+}
+.ion-color-secondary {
+  --ion-color-base: var(--ion-color-secondary);
+  --ion-color-base-rgb: var(--ion-color-secondary-rgb);
+  --ion-color-contrast: var(--ion-color-secondary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-secondary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-secondary-shade);
+  --ion-color-tint: var(--ion-color-secondary-tint);
+}
+.ion-color-tertiary {
+  --ion-color-base: var(--ion-color-tertiary);
+  --ion-color-base-rgb: var(--ion-color-tertiary-rgb);
+  --ion-color-contrast: var(--ion-color-tertiary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-tertiary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-tertiary-shade);
+  --ion-color-tint: var(--ion-color-tertiary-tint);
+}
+.ion-color-success {
+  --ion-color-base: var(--ion-color-success);
+  --ion-color-base-rgb: var(--ion-color-success-rgb);
+  --ion-color-contrast: var(--ion-color-success-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-success-contrast-rgb);
+  --ion-color-shade: var(--ion-color-success-shade);
+  --ion-color-tint: var(--ion-color-success-tint);
+}
+.ion-color-warning {
+  --ion-color-base: var(--ion-color-warning);
+  --ion-color-base-rgb: var(--ion-color-warning-rgb);
+  --ion-color-contrast: var(--ion-color-warning-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-warning-contrast-rgb);
+  --ion-color-shade: var(--ion-color-warning-shade);
+  --ion-color-tint: var(--ion-color-warning-tint);
+}
+.ion-color-danger {
+  --ion-color-base: var(--ion-color-danger);
+  --ion-color-base-rgb: var(--ion-color-danger-rgb);
+  --ion-color-contrast: var(--ion-color-danger-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-danger-contrast-rgb);
+  --ion-color-shade: var(--ion-color-danger-shade);
+  --ion-color-tint: var(--ion-color-danger-tint);
+}
+.ion-color-medium {
+  --ion-color-base: var(--ion-color-medium);
+  --ion-color-base-rgb: var(--ion-color-medium-rgb);
+  --ion-color-contrast: var(--ion-color-medium-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-medium-contrast-rgb);
+  --ion-color-shade: var(--ion-color-medium-shade);
+  --ion-color-tint: var(--ion-color-medium-tint);
+}
+.ion-color-light {
+  --ion-color-base: var(--ion-color-light);
+  --ion-color-base-rgb: var(--ion-color-light-rgb);
+  --ion-color-contrast: var(--ion-color-light-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-light-contrast-rgb);
+  --ion-color-shade: var(--ion-color-light-shade);
+  --ion-color-tint: var(--ion-color-light-tint);
+}
+.ion-color-dark {
+  --ion-color-base: var(--ion-color-dark);
+  --ion-color-base-rgb: var(--ion-color-dark-rgb);
+  --ion-color-contrast: var(--ion-color-dark-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-dark-contrast-rgb);
+  --ion-color-shade: var(--ion-color-dark-shade);
+  --ion-color-tint: var(--ion-color-dark-tint);
+}
+
+/* ==========================================================================
+   Modo oscuro (automático según el sistema)
+   Para controlarlo manualmente usa la clase .ion-palette-dark en <html>
+   ========================================================================== */
+@media (prefers-color-scheme: light) {
+  :root {
+    --ion-background-color: #0f172a;
+    --ion-background-color-rgb: 15, 23, 42;
+    --ion-text-color: #e5e7eb;
+    --ion-text-color-rgb: 229, 231, 235;
+    --ion-border-color: #263248;
+    --ion-item-background: #1a2338;
+    --ion-card-background: #1a2338;
+    --ion-toolbar-background: #162033;
+    --ion-tab-bar-background: #162033;
+
+    --turno-espera-bg: #3a2f08;
+    --turno-llamado-bg: #10253f;
+    --turno-atencion-bg: #241d44;
+    --turno-finalizado-bg: #0f3321;
+    --turno-cancelado-bg: #232a38;
+    --turno-ausente-bg: #3b1620;
+    --turno-prioritario-bg: #3d2410;
+
+    --ticket-bg: #1a2338;
+    --ticket-border: #334155;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ==========================================================================
+   Componentes reutilizables de turnos
+   ========================================================================== */
+
+/* Badge de estado: <span className="turno-badge turno-badge--espera">En espera</span> */
+.turno-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.turno-badge--espera     { color: #8a6500; background: var(--turno-espera-bg); }
+.turno-badge--llamado    { color: var(--turno-llamado); background: var(--turno-llamado-bg); }
+.turno-badge--atencion   { color: var(--turno-atencion); background: var(--turno-atencion-bg); }
+.turno-badge--finalizado { color: #1a9a4d; background: var(--turno-finalizado-bg); }
+.turno-badge--cancelado  { color: var(--turno-cancelado); background: var(--turno-cancelado-bg); }
+.turno-badge--ausente    { color: var(--turno-ausente); background: var(--turno-ausente-bg); }
+.turno-badge--prioritario{ color: var(--turno-prioritario); background: var(--turno-prioritario-bg); }
+
+/* Tarjeta de turno */
+.turno-card {
+  background: var(--ion-card-background);
+  border-radius: var(--radius-md);
+  border-left: 6px solid var(--ion-color-medium);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-md);
+  margin: var(--space-sm) var(--space-md);
+  transition: box-shadow var(--transition-base), transform var(--transition-fast);
+}
+.turno-card:active { transform: scale(0.99); }
+.turno-card--espera      { border-left-color: var(--turno-espera); }
+.turno-card--llamado     { border-left-color: var(--turno-llamado); }
+.turno-card--atencion    { border-left-color: var(--turno-atencion); }
+.turno-card--finalizado  { border-left-color: var(--turno-finalizado); }
+.turno-card--cancelado   { border-left-color: var(--turno-cancelado); }
+.turno-card--ausente     { border-left-color: var(--turno-ausente); }
+.turno-card--prioritario { border-left-color: var(--turno-prioritario); }
+
+/* Número de turno (ej. A-023) */
+.turno-numero {
+  font-size: var(--ticket-numero-size);
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--ion-color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ticket imprimible / digital */
+.turno-ticket {
+  background: var(--ticket-bg);
+  border: 2px dashed var(--ticket-border);
+  border-radius: var(--ticket-radius);
+  padding: var(--space-lg);
+  text-align: center;
+  box-shadow: var(--shadow-md);
+}
+
+/* Indicador de módulo */
+.modulo-indicador {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: var(--space-sm);
+}
+.modulo-indicador--disponible { background: var(--modulo-disponible); }
+.modulo-indicador--ocupado    { background: var(--modulo-ocupado); }
+.modulo-indicador--pausa      { background: var(--modulo-pausa); }
+.modulo-indicador--cerrado    { background: var(--modulo-cerrado); }
+
+/* Pantalla pública de turnos */
+.display-turnos {
+  background: var(--display-bg);
+  color: var(--display-text);
+  min-height: 100%;
+  padding: var(--space-xl);
+}
+.display-turnos__actual {
+  font-size: var(--display-turno-size);
+  font-weight: 900;
+  color: var(--display-turno-actual);
+  text-align: center;
+  line-height: 1;
+}
+.display-turnos__modulo {
+  font-size: var(--display-modulo-size);
+  text-align: center;
+  opacity: 0.9;
+}
+.display-turnos__lista {
+  background: var(--display-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+/* Animación al llamar un turno */
+@keyframes turno-llamado-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(30, 111, 217, 0.6); }
+  70%  { box-shadow: 0 0 0 20px rgba(30, 111, 217, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(30, 111, 217, 0); }
+}
+.turno-llamando {
+  animation: turno-llamado-pulse 1.5s infinite;
+}
+
+/* ==========================================================================
+   Ajustes globales de componentes Ionic
+   ========================================================================== */
+ion-button {
+  --border-radius: var(--radius-md);
+  --box-shadow: none;
+  text-transform: none;
+  font-weight: 600;
+}
+ion-card {
+  --background: var(--ion-card-background);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+ion-toolbar {
+  --background: var(--ion-toolbar-background);
+  --border-color: var(--ion-border-color);
+}
+ion-tab-bar {
+  --background: var(--ion-tab-bar-background);
+  --border: 1px solid var(--ion-border-color);
+}
+ion-item {
+  --background: var(--ion-item-background);
+  --border-color: var(--ion-border-color);
+}
