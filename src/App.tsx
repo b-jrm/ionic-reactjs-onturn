@@ -1,7 +1,8 @@
 // src/App.tsx
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Navigate, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Redirect, Route } from 'react-router-dom';
 
 /* CSS core de Ionic */
 import '@ionic/react/css/core.css';
@@ -15,10 +16,11 @@ import '@ionic/react/css/display.css';
 /* Tema Onturn (siempre después de los CSS de Ionic) */
 import './theme/onturn.css';
 
+import { SqliteService } from './app/db/sqlite.service';
 import Branches from './pages/Admin/Branches';
-import Positions from './pages/Admin/Positions';
 import Dashboard from './pages/Admin/Dashboard';
 import Monitoring from './pages/Admin/Monitoring';
+import Positions from './pages/Admin/Positions';
 import Workdays from './pages/Admin/Workdays';
 import MyTurn from './pages/Client/MyTurn';
 import RequestTurn from './pages/Client/RequestTurn';
@@ -28,32 +30,50 @@ import RoomScreen from './pages/RoomScreen';
 
 setupIonicReact({ mode: 'md' });
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/login" element={<Login/>} />
-        {/* Administrador */}
-        <Route path="/manage" element={<Navigate to="/login" replace />} />
-        <Route path="/manage/dashboard" element={<Dashboard/>} />
-        <Route path="/manage/monitoring" element={<Monitoring/>} />
-        <Route path="/manage/workdays" element={<Workdays/>} />
-        <Route path="/manage/branches" element={<Branches/>} />
+const App: React.FC = () => {
 
-        {/* Operador */}
-        <Route path="/operador" element={<ServicePanel/>} />
+  useEffect(() => {
+    const initializeSQLite = async () => {
+      try {
+        const sqlite = new SqliteService();
+        await sqlite.init();
+        console.log('SQLite inicializado correctamente');
+      } catch (e) {
+        console.error('Error iniciando SQLite', e);
+      }
+    };
 
-        {/* Cliente (sin cuenta) */}
-        <Route path="/request" element={<RequestTurn/>} />
-        <Route path="/me" element={<MyTurn/>} />
+    initializeSQLite();
+  }, []);
 
-        {/* Pantalla pública */}
-        <Route path="/room" element={<RoomScreen/>} />
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route path="/login" component={Login} />
+          {/* Administrador */}
+          <Route exact path="/manage"><Redirect to="/login" /></Route>
+          <Route path="/manage/dashboard" component={Dashboard} />
+          <Route path="/manage/monitoring" component={Monitoring} />
+          <Route path="/manage/positions" component={Positions} />
+          <Route path="/manage/workdays" component={Workdays} />
+          <Route path="/manage/branches" component={Branches} />
 
-        <Route path="/" element={<Navigate to="/login" replace />} />
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+          {/* Operador */}
+          <Route path="/operador" component={ServicePanel} />
+
+          {/* Cliente (sin cuenta) */}
+          <Route path="/request" component={RequestTurn} />
+          <Route path="/me" component={MyTurn} />
+
+          {/* Pantalla pública */}
+          <Route path="/room" component={RoomScreen} />
+
+          <Route exact path="/"><Redirect to="/login" /></Route>
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 
 export default App;
