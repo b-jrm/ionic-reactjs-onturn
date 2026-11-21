@@ -166,7 +166,7 @@ export class JornadaService {
       tipos: r.tipos ? String(r.tipos).split("|").map(Number) : []
     }));
 
-    console.log("data", data);
+    // console.log("data", data);
 
     return data;
   }
