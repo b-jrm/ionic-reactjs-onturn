@@ -1,7 +1,7 @@
 // src/App.tsx
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 
 /* CSS core de Ionic */
@@ -16,7 +16,7 @@ import '@ionic/react/css/display.css';
 /* Tema Onturn (siempre después de los CSS de Ionic) */
 import './theme/onturn.css';
 
-import { SqliteService } from './app/db/sqlite.service';
+// import { sqliteService } from './app/db/sqlite.service';
 import Branches from './pages/Admin/Branches';
 import Dashboard from './pages/Admin/Dashboard';
 import Monitoring from './pages/Admin/Monitoring';
@@ -32,19 +32,19 @@ setupIonicReact({ mode: 'md' });
 
 const App: React.FC = () => {
 
-  useEffect(() => {
-    const initializeSQLite = async () => {
-      try {
-        const sqlite = new SqliteService();
-        await sqlite.init();
-        console.log('SQLite inicializado correctamente');
-      } catch (e) {
-        console.error('Error iniciando SQLite', e);
-      }
-    };
+  // useEffect(() => {
+  //   const initializeSQLite = async () => {
+  //     try {
+  //       const sqlite = sqliteService;
+  //       await sqlite.init();
+  //       console.log('SQLite inicializado correctamente');
+  //     } catch (e) {
+  //       console.error('Error iniciando SQLite', e);
+  //     }
+  //   };
 
-    initializeSQLite();
-  }, []);
+  //   initializeSQLite();
+  // }, []);
 
   return (
     <IonApp>

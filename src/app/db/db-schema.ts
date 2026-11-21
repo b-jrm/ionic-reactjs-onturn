@@ -53,8 +53,8 @@ export const MIGRATIONS: Migration[] = [
         usuario_id INTEGER PRIMARY KEY AUTOINCREMENT,
         correo_electronico TEXT NOT NULL UNIQUE,
         clave TEXT NOT NULL,
-        activo INTEGER NOT NULL DEFAULT 1,
-        perfil_id INTEGER REFERENCES perfiles(perfil_id) ON DELETE SET NULL
+        perfil_id INTEGER REFERENCES perfiles(perfil_id) ON DELETE SET NULL,
+        activo INTEGER NOT NULL DEFAULT 1
       );
 
       CREATE TABLE IF NOT EXISTS jornadas (
@@ -63,7 +63,6 @@ export const MIGRATIONS: Migration[] = [
         hora_inicio TEXT NOT NULL,
         hora_fin TEXT NOT NULL,
         secuencia_inicial INTEGER NOT NULL DEFAULT 1,
-        clave TEXT NOT NULL,
         sucursal_id INTEGER REFERENCES sucursales(sucursal_id) ON DELETE SET NULL,
         activo INTEGER NOT NULL DEFAULT 1
       );
@@ -86,7 +85,7 @@ export const MIGRATIONS: Migration[] = [
         puesto_id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL,
         numero TEXT NOT NULL,
-        jornada_id INTEGER REFERENCES jornadas(jornada_id) ON DELETE SET NULL,
+        sucursal_id INTEGER REFERENCES sucursales(sucursal_id) ON DELETE SET NULL,
         usuario_id INTEGER REFERENCES usuarios(usuario_id) ON DELETE SET NULL,
         activo INTEGER NOT NULL DEFAULT 1
       );

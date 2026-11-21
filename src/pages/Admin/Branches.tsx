@@ -1,26 +1,26 @@
 // src/pages/admin/Sucursales.tsx
 // CRUD de sucursales (Ionic 7.2.1 + React Router v5)
 import { IonAlert, IonButton, IonContent, IonInput, IonPage, IonToggle } from '@ionic/react';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
-import { SucursalService } from '../../app/db/models/sucursales';
+import { Model as SucursalModel } from '../../app/db/models/sucursales';
 import SideLayout from '../../components/SideLayout';
 import { inputValue } from '../../utils/ionValue';
-import { testSQLite } from '../SQLiteTest';
+// import { testSQLite } from '../SQLiteTest';
 
 import { adminNav } from './nav';
 
 interface Sucursal {
-  sucursal_id: number;
-  codigo: string,
+  id: number;
+  codigo: string;
   nombre: string;
-  telefono: string;
-  direccion: string;
   ciudad: string;
-  activo: boolean;
+  direccion: string;
+  telefono: string;
+  activo: number;
 }
 
-type FormSucursal = Omit<Sucursal, 'sucursal_id'>;
+type FormSucursal = Omit<Sucursal, 'id'>;
 
 const VACIA: FormSucursal = {
   codigo: '',
@@ -28,29 +28,51 @@ const VACIA: FormSucursal = {
   ciudad: '',
   direccion: '',
   telefono: '',
-  activo: true,
+  activo: 1,
 };
-
-const INICIALES: Sucursal[] = await SucursalService.getAll();
 
 // TODO: reemplazar por datos reales (API)
 // const INICIALES: Sucursal[] = [
-//   { id: 1, codigo: 'SUC-001', nombre: 'Sede Centro', ciudad: 'Bogotá', direccion: 'Cra 7 # 32-16', telefono: '601 555 0101', activa: true },
-//   { id: 2, codigo: 'SUC-002', nombre: 'Sede Norte', ciudad: 'Bogotá', direccion: 'Calle 127 # 15-40', telefono: '601 555 0102', activa: true },
-//   { id: 3, codigo: 'SUC-003', nombre: 'Sede Medellín', ciudad: 'Medellín', direccion: 'Av. El Poblado # 10-25', telefono: '604 555 0103', activa: true },
-//   { id: 4, codigo: 'SUC-004', nombre: 'Sede Cali', ciudad: 'Cali', direccion: 'Av. 6N # 23-50', telefono: '602 555 0104', activa: false },
+//   { id: 1, codigo: 'SUC-001', nombre: 'Sede Centro', ciudad: 'Bogotá', direccion: 'Cra 7 # 32-16', telefono: '601 555 0101', activo: 1 },
+//   { id: 2, codigo: 'SUC-002', nombre: 'Sede Norte', ciudad: 'Bogotá', direccion: 'Calle 127 # 15-40', telefono: '601 555 0102', activo: 1 },
+//   { id: 3, codigo: 'SUC-003', nombre: 'Sede Medellín', ciudad: 'Medellín', direccion: 'Av. El Poblado # 10-25', telefono: '604 555 0103', activo: 1 },
+//   { id: 4, codigo: 'SUC-004', nombre: 'Sede Cali', ciudad: 'Cali', direccion: 'Av. 6N # 23-50', telefono: '602 555 0104', activo: 0 },
 // ];
 
 const Sucursales: React.FC = () => {
 
-  testSQLite();
+  // testSQLite();
 
-  const [sucursales, setSucursales] = useState<Sucursal[]>(INICIALES);
+  const [sucursales, setSucursales] = useState<Sucursal[]>([]);
+  const [nextId, setNextId] = useState<number>(0);
   const [busqueda, setBusqueda] = useState('');
   const [editandoId, setEditandoId] = useState<number | null>(null); // null = modo crear
   const [form, setForm] = useState<FormSucursal>(VACIA);
   const [error, setError] = useState('');
   const [aEliminar, setAEliminar] = useState<Sucursal | null>(null);
+
+  const cargarSucursales = async () => {
+    try {
+      setSucursales( await SucursalModel.getAll() );
+    } catch (error) {
+      console.error('Error al cargar sucursales:', error);
+    }
+  };
+
+  useEffect(() => {
+    const cargar = async () => {
+      await cargarSucursales();
+    };
+    void cargar();
+  }, []);
+
+  useEffect(() => {
+    const cargarNextId = async () => {
+      const id = await SucursalModel.getNextId();
+      setNextId(id);
+    };
+    void cargarNextId();
+  }, []);
 
   const filtradas = useMemo(() => {
     const q = busqueda.trim().toLowerCase();
@@ -66,7 +88,7 @@ const Sucursales: React.FC = () => {
   /* ---------- Crear ---------- */
   const nueva = () => {
     setEditandoId(null);
-    setForm({ ...VACIA, codigo: `SUC-${String(sucursales.length + 1).padStart(3, '0')}` });
+    setForm({ ...VACIA, codigo: `SUC-${String(nextId).padStart(3, '0')}` });
     setError('');
   };
 
@@ -84,13 +106,14 @@ const Sucursales: React.FC = () => {
       setError('Código, nombre y ciudad son obligatorios.');
       return;
     }
-    const codigoRepetido = sucursales.some(
-      (s) => s.codigo.toLowerCase() === form.codigo.trim().toLowerCase() && s.id !== editandoId
-    );
-    if (codigoRepetido) {
-      setError('Ya existe una sucursal con ese código.');
-      return;
-    }
+
+    // const codigoRepetido = sucursales.some(
+    //   (s) => s.codigo.toLowerCase() === form.codigo.trim().toLowerCase() && s.id !== editandoId
+    // );
+    // if (codigoRepetido) {
+    //   setError('Ya existe una sucursal con ese código.');
+    //   return;
+    // }
 
     const limpia: FormSucursal = {
       ...form,
@@ -102,10 +125,13 @@ const Sucursales: React.FC = () => {
     };
 
     if (editandoId === null) {
+      SucursalModel.create(form);
       setSucursales((prev) => [...prev, { id: Date.now(), ...limpia }]);
     } else {
+      SucursalModel.update(editandoId, form);
       setSucursales((prev) => prev.map((s) => (s.id === editandoId ? { id: s.id, ...limpia } : s)));
     }
+
     setEditandoId(null);
     setForm(VACIA);
     setError('');
@@ -118,13 +144,16 @@ const Sucursales: React.FC = () => {
   };
 
   /* ---------- Activar / desactivar ---------- */
-  const toggleActivo = (id: number, activo: boolean) =>
+  const toggleActiva = (id: number, activo: number) => {
+    SucursalModel.update(id, { activo: activo });
     setSucursales((prev) => prev.map((s) => (s.id === id ? { ...s, activo } : s)));
+  }
 
   /* ---------- Eliminar ---------- */
   const confirmarEliminar = () => {
     if (!aEliminar) return;
     setSucursales((prev) => prev.filter((s) => s.id !== aEliminar.id));
+    SucursalModel.delete(aEliminar.id);
     if (editandoId === aEliminar.id) cancelar();
     setAEliminar(null);
   };
@@ -136,7 +165,7 @@ const Sucursales: React.FC = () => {
       <IonContent className="on-content">
         <SideLayout
           items={adminNav}
-          activePath="/admin/sucursales"
+          activePath="/manage/branches"
           user={{ name: 'Carlos Ruiz', role: 'Administrador' }}
         >
           <div className="on-main">
@@ -187,8 +216,8 @@ const Sucursales: React.FC = () => {
                             <div className="on-inline">
                               <IonToggle
                                 className="on-toggle"
-                                checked={s.activo}
-                                onIonChange={(e) => toggleActivo(s.id, e.detail.checked)}
+                                checked={s.activo === 1}
+                                onIonChange={(e) => toggleActiva(s.id, (e.detail.checked ? 1 : 0))}
                               />
                               <span className={`on-badge ${s.activo ? 'on-badge--green' : 'on-badge--gray'}`}>
                                 {s.activo ? 'Activa' : 'Inactiva'}
@@ -197,14 +226,10 @@ const Sucursales: React.FC = () => {
                           </td>
                           <td>
                             <div className="on-row-actions">
-                              <button type="button" className="on-row-btn" onClick={() => editar(s)}>
+                              <button type="button" className="on-row-btn on-row-btn--success" onClick={() => editar(s)}>
                                 Editar
                               </button>
-                              <button
-                                type="button"
-                                className="on-row-btn on-row-btn--danger"
-                                onClick={() => setAEliminar(s)}
-                              >
+                              <button type="button" className="on-row-btn on-row-btn--danger" onClick={() => setAEliminar(s)}>
                                 Eliminar
                               </button>
                             </div>
@@ -238,6 +263,7 @@ const Sucursales: React.FC = () => {
                     <IonInput
                       className="on-input"
                       placeholder="SUC-001"
+                      readonly disabled
                       value={form.codigo}
                       onIonInput={(e) => setCampo('codigo', inputValue(e))}
                     />
@@ -286,13 +312,13 @@ const Sucursales: React.FC = () => {
 
                 <div className="on-switch-row on-field">
                   <div>
-                    <strong>Sucursal activa</strong>
+                    <strong>Sucursal activa&nbsp;&nbsp;</strong>
                     <span>Las inactivas no reciben turnos nuevos.</span>
                   </div>
                   <IonToggle
                     className="on-toggle"
-                    checked={form.activo}
-                    onIonChange={(e) => setCampo('activo', e.detail.checked)}
+                    checked={form.activo === 1}
+                    onIonChange={(e) => setCampo('activo', (e.detail.checked ? 1 : 0))}
                   />
                 </div>
 

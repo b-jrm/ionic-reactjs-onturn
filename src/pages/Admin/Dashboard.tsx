@@ -1,5 +1,5 @@
 
-import { IonPage, IonContent, IonButton, IonIcon, IonBadge, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonNote } from '@ionic/react'; 
+import { IonPage, IonContent, IonButton, IonIcon, IonBadge, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonNote } from '@ionic/react';
 import {
     ticketOutline,
     timeOutline,
@@ -7,6 +7,7 @@ import {
     hourglassOutline
 } from 'ionicons/icons';
 
+import { sqliteService } from '../../app/db/sqlite.service';
 import SideLayout from '../../components/SideLayout';
 
 import { adminNav } from './nav';
@@ -14,6 +15,15 @@ import { adminNav } from './nav';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
+
+    const reiniciarBD = async () => {
+        try {
+            await sqliteService.resetDatabase();
+            console.log('SQLite reiniciada correctamente');
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const turnos = [
         { numero: 'A-025', cliente: 'Carlos Rodríguez', servicio: 'Información', estado: 'Atendido', hora: '09:15' },
@@ -165,6 +175,18 @@ const Dashboard: React.FC = () => {
                                             </IonCardContent>
                                         </IonCard>
                                     </IonCol>
+
+                                    <IonCol size="12" sizeMd="6" sizeLg="3">
+                                        <IonCard className="stat-card">
+                                            <IonCardContent>
+                                                <IonButton color="danger" onClick={reiniciarBD}>
+                                                    Reiniciar base de datos
+                                                </IonButton>
+                                            </IonCardContent>
+                                        </IonCard>
+                                    </IonCol>
+
+                                    
 
                                 </IonRow>
                             </IonGrid>

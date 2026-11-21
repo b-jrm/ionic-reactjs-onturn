@@ -1,11 +1,11 @@
 
-import { SqliteService } from '../sqlite.service';
-
+import { sqliteService } from '../sqlite.service';
 /**
  * Modelo de datos de una sucursal.
  */
 export interface Sucursal {
-  sucursal_id: number;
+  id: number;
+  codigo: string;
   nombre: string;
   telefono: string;
   direccion: string;
@@ -37,23 +37,39 @@ export interface SucursalUpdate {
 /**
  * Servicio CRUD de sucursales.
  */
-export class SucursalModel {
+export class SucursalService {
 
     protected db: any;
 
   constructor() {
-    this.db = new SqliteService()
+    this.db = sqliteService;
   }
     /**
    * Obtener todas las sucursales.
    */
-  async getAll(): Promise<Sucursal[]> {
+  async getAll(columns?: string): Promise<Sucursal[]> {
 
     await this.db.init();
-
-    return this.db.query(
-      `SELECT * FROM sucursales` // ORDER BY sucursal_id DESC
-    );
+    
+    if( columns !== undefined && columns.length > 0 ){
+      return await this.db.query(
+        `SELECT 
+          ${columns}
+        FROM sucursales` // ORDER BY sucursal_id DESC
+      );
+    }else{
+        return await this.db.query(
+            `SELECT 
+                sucursal_id AS id, 
+                nombre,
+                'SUC-' || PRINTF('%03d', sucursal_id) AS codigo,
+                telefono,
+                direccion,
+                ciudad,
+                activo
+            FROM sucursales` // ORDER BY sucursal_id DESC
+        );
+    }
   }
 
   /**
@@ -62,8 +78,17 @@ export class SucursalModel {
   async getActive(): Promise<Sucursal[]> {
     await this.db.init();
 
-    return this.db.query( // <Sucursal>
-      `SELECT * FROM sucursales WHERE activo = 1 ORDER BY nombre ASC`
+    // CONCAT('SUC-', LPAD(sucursal_id, 3, '0'))
+    return await this.db.query( // <Sucursal>
+      `SELECT
+        sucursal_id AS id, 
+        nombre,
+        'SUC-' || PRINTF('%03d', sucursal_id) AS codigo,
+        telefono,
+        direccion,
+        ciudad,
+        activo
+      FROM sucursales WHERE activo = 1 ORDER BY nombre ASC`
     );
   }
 
@@ -73,12 +98,30 @@ export class SucursalModel {
   async getById(id: number): Promise<Sucursal | null> {
     await this.db.init();
 
+    // CONCAT('SUC-', LPAD(sucursal_id, 3, '0'))
     const result = await this.db.query(
-      `SELECT * FROM sucursales WHERE sucursal_id = ?`,
+      `SELECT
+        sucursal_id AS id, 
+        nombre,
+        'SUC-' || PRINTF('%03d', sucursal_id) AS codigo,
+        telefono,
+        direccion,
+        ciudad,
+        activo
+      FROM sucursales WHERE sucursal_id = ?`,
       [id]
     );
 
     return result[0] ?? null;
+  }
+
+  async getNextId(): Promise<number> {
+    await this.db.init();
+    const next = await this.db.query(
+      `SELECT MAX(sucursal_id) + 1 AS id FROM sucursales`
+    );
+
+    return next[0].id ?? 1;
   }
 
   /**
@@ -177,18 +220,18 @@ export class SucursalModel {
    * Activar una sucursal.
    */
   async activate(id: number): Promise<boolean> {
-    return this.update(id, { activo: 1 });
+    return await this.update(id, { activo: 1 });
   }
 
   /**
    * Desactivar una sucursal.
    */
   async deactivate(id: number): Promise<boolean> {
-    return this.update(id, { activo: 0 });
+    return await this.update(id, { activo: 0 });
   }
 }
 
 /**
  * Instancia compartida del servicio.
  */
-export const SucursalService = new SucursalModel();
+export const Model = new SucursalService();

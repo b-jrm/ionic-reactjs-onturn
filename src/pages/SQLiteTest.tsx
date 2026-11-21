@@ -1,11 +1,11 @@
 
-import { SqliteService } from '../app/db/sqlite.service';
+import { sqliteService } from '../app/db/sqlite.service';
 
 export async function testSQLite(): Promise<boolean> {
   try {
     // 1. Inicializar la conexión
 
-    const db = new SqliteService();
+    const db = sqliteService;
 
     await db.init();
 

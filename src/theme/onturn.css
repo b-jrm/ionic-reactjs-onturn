@@ -79,7 +79,7 @@ ion-input.on-input {
 }
 
 /* ---------- Badges ---------- */
-.on-badge { display: inline-flex; align-items: center; padding: 3px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.on-badge { display: inline-flex; align-items: center; margin: 0px 7px; padding: 3px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
 .on-badge--green { background: var(--on-green-soft); color: var(--on-green-text); }
 .on-badge--amber { background: var(--on-amber-soft); color: var(--on-amber-text); }
 .on-badge--blue { background: var(--on-blue-soft); color: #1b2fa0; }
@@ -142,6 +142,7 @@ ion-toggle.on-toggle { --track-background: #8e98ae; --track-background-checked: 
 .on-chip { all: unset; box-sizing: border-box; cursor: pointer; padding: 9px 18px; border-radius: 999px; border: 1px solid var(--on-border); font-weight: 600; background: #fff; }
 .on-chip.is-on { background: var(--on-blue-soft); border-color: var(--on-blue); color: #1b2fa0; }
 .on-actions { display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px; }
+.on-select { width: 100%; max-width: 100%; display: block; }
 
 /* ---------- Monitoreo ---------- */
 .on-stats5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 18px; }
@@ -239,6 +240,9 @@ ion-toggle.on-toggle { --track-background: #8e98ae; --track-background-checked: 
 .on-tv__queues { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
 .on-tv__q { border: 1px dashed var(--on-navy-3); border-radius: 14px; padding: 18px 22px; font-size: 22px; color: #dbe2f0; }
 .on-tv__q b { color: #fff; }
+.on-row-btn { padding: 3px; border-radius: 2px; margin: 2px; }
+.on-row-btn.on-row-btn--danger { background-color: #b51b13; }
+.on-row-btn.on-row-btn--success { background-color: #1d64d5; }
 
 @keyframes on-pulse { 0% { box-shadow: 0 0 0 0 rgba(37,67,217,.6); } 70% { box-shadow: 0 0 0 28px rgba(37,67,217,0); } 100% { box-shadow: 0 0 0 0 rgba(37,67,217,0); } }
 .on-tv__now.is-calling { animation: on-pulse 1.8s infinite; }

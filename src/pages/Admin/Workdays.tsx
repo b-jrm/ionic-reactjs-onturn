@@ -1,7 +1,8 @@
 // src/pages/admin/Jornadas.tsx
-import { IonButton, IonContent, IonInput, IonPage, IonToggle } from '@ionic/react';
-import { useState } from 'react';
+import { IonButton, IonContent, IonInput, IonPage, IonToggle, IonSelect, IonSelectOption } from '@ionic/react';
+import { useState, useEffect } from 'react';
 
+import { Model as ModelSucursal } from '../../app/db/models/sucursales';
 import SideLayout from '../../components/SideLayout';
 import { inputValue } from '../../utils/ionValue';
 
@@ -17,6 +18,11 @@ interface Jornada {
   activa: boolean;
   estado: 'Activa ahora' | 'Programada' | 'Inactiva';
   tipos: string[];
+}
+
+interface DataForeign {
+  id: number;
+  nombre: string;
 }
 
 const DIAS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
@@ -38,9 +44,28 @@ const resumenDias = (dias: number[]) =>
     : dias.map((d) => DIAS_TXT[d]).join(', ');
 
 const Jornadas: React.FC = () => {
+
+  const [sucursal, setSucursal] = useState<number>(0);
+  const [sucursales, setSucursales] = useState<DataForeign[]>([]);
+
   const [jornadas, setJornadas] = useState<Jornada[]>(INICIALES);
   const [seleccionada, setSeleccionada] = useState<number>(1);
   const [borrador, setBorrador] = useState<Jornada>(INICIALES[0]);
+
+  const cargarData = async () => {
+      try {
+        setSucursales( await ModelSucursal.getAll("sucursal_id AS id, (nombre || ' (' || ciudad || ')') AS nombre") );
+      } catch (error) {
+        console.error('Error al cargar los datos:', error);
+      }
+    };
+  
+    useEffect(() => {
+      const cargar = async () => {
+        await cargarData();
+      };
+      void cargar();
+    }, []);
 
   const seleccionar = (j: Jornada) => {
     setSeleccionada(j.id);
@@ -103,6 +128,17 @@ const Jornadas: React.FC = () => {
                 Nueva jornada
               </IonButton>
             </div>
+
+            <IonSelect
+              placeholder="Seleccionar Sucursal"
+              interface="action-sheet" 
+              value={sucursal} 
+              onIonChange={(e) => setSucursal(e.detail.value)}
+          >
+              {sucursales.map((s) => (
+                <IonSelectOption key={s.id} value={s.id}>{s.nombre}</IonSelectOption>
+              ))}
+          </IonSelect>
 
             <div className="on-split">
               {/* Lista */}
