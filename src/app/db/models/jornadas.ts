@@ -8,8 +8,9 @@ export interface Jornada {
   nombre: string;
   hora_inicio: string;
   hora_fin: string;
-  secuencia_inicial: number;
   sucursal_id: number;
+  dias: number[];
+  tipos: number[];
   activo: number;
 }
 
@@ -20,8 +21,9 @@ export interface JornadaCreate {
   nombre: string;
   hora_inicio: string;
   hora_fin: string;
-  secuencia_inicial: number;
   sucursal_id: number;
+  dias: number[];
+  tipos: number[];
   activo: number;
 }
 
@@ -32,8 +34,9 @@ export interface JornadaUpdate {
   nombre?: string;
   hora_inicio?: string;
   hora_fin?: string;
-  secuencia_inicial?: number;
   sucursal_id?: number;
+  dias?: number[];
+  tipos?: number[];
   activo?: number;
 }
 
@@ -54,26 +57,40 @@ export class JornadaService {
 
     await this.db.init();
 
+    let result: any[];
 
     if( columns !== undefined && columns.length > 0 ){
-      return await this.db.query(
+      const response = await this.db.query(
         `SELECT 
           ${columns}
         FROM jornadas` // ORDER BY jornada_id DESC
       );
+      result = response.values ?? [];
     }else{
-      return await this.db.query(
+      const response =  await this.db.query(
         `SELECT 
           jornada_id AS id, 
           nombre,
           hora_inicio,
           hora_fin,
-          secuencia_inicial,
           sucursal_id,
+          dias,
+          tipos,
           activo 
         FROM jornadas` // ORDER BY jornada_id DESC
       );
+      result = response.values ?? [];
     }
+
+    result.map((r) => ({
+      ...r,
+      dias: r.dias ? r.dias.split("|").map(Number) : [],
+      tipos: r.tipos ? r.tipos.split("|").map(Number) : []
+    }));
+
+    console.log("result", result);
+
+    return result;
 
     
   }
@@ -90,8 +107,9 @@ export class JornadaService {
         nombre,
         hora_inicio,
         hora_fin,
-        secuencia_inicial,
         sucursal_id,
+        dias,
+        tipos,
         activo 
       FROM jornadas WHERE activo = 1 ORDER BY nombre ASC`
     );
@@ -109,14 +127,48 @@ export class JornadaService {
         nombre,
         hora_inicio,
         hora_fin,
-        secuencia_inicial,
         sucursal_id,
+        dias,
+        tipos,
         activo 
       FROM jornadas WHERE puesto_id = ?`,
       [id]
     );
 
     return result[0] ?? null;
+  }
+
+  /**
+   * Obtener una jornada por ID de sucursal.
+   */
+  async getBySucursal(id: number): Promise<Jornada[]> {
+    await this.db.init();
+
+    const result = await this.db.query(
+      `SELECT 
+        jornada_id AS id, 
+        nombre,
+        hora_inicio,
+        hora_fin,
+        sucursal_id,
+        dias,
+        tipos,
+        activo
+      FROM jornadas WHERE sucursal_id = ?`,
+      [id]
+    );
+
+    // console.log("result0", result);
+
+    const data = result.map((r: Jornada) => ({
+      ...r,
+      dias: r.dias ? String(r.dias).split("|").map(Number) : [],
+      tipos: r.tipos ? String(r.tipos).split("|").map(Number) : []
+    }));
+
+    console.log("data", data);
+
+    return data;
   }
 
   async getNextId(): Promise<number> {
@@ -133,24 +185,26 @@ export class JornadaService {
    */
   async create(data: JornadaCreate): Promise<number> {
     await this.db.init();
-
+    console.log("create.data", data);
     const result = await this.db.run(
       `INSERT INTO jornadas (
         nombre,
         hora_inicio,
         hora_fin,
-        secuencia_inicial,
-        sucursal_id 
-      ) VALUES (?, ?, ?, ?, ?)`,
+        sucursal_id,
+        dias,
+        tipos
+      ) VALUES (?, ?, ?, ?, ?, ?)`,
       [
         data.nombre,
         data.hora_inicio,
         data.hora_fin,
-        data.secuencia_inicial,
-        data.sucursal_id
+        data.sucursal_id,
+        data.dias.join('|'),
+        data.tipos.join('|')
       ]
     );
-
+    console.log("result", result);
     return result.lastId;
   }
 
@@ -182,14 +236,19 @@ export class JornadaService {
       values.push(data.hora_fin);
     }
 
-    if (data.secuencia_inicial !== undefined) {
-      fields.push('secuencia_inicial = ?');
-      values.push(data.secuencia_inicial);
-    }
-
     if (data.sucursal_id !== undefined) {
       fields.push('sucursal_id = ?');
       values.push(data.sucursal_id);
+    }
+
+    if (data.dias !== undefined) {
+      fields.push('dias = ?');
+      values.push(data.dias);
+    }
+
+    if (data.tipos !== undefined) {
+      fields.push('tipos = ?');
+      values.push(data.tipos);
     }
 
     if (data.activo !== undefined) {

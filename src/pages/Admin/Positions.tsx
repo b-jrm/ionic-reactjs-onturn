@@ -122,8 +122,8 @@ const Positions: React.FC = () => {
     };
 
     if (editandoId === null) {
-      Model.create(form);
-      setData((prev) => [...prev, { id: Date.now(), ...limpia }]);
+      const createdId = Model.create(form);
+      setData((prev) => [...prev, { ...limpia, id: Number(createdId) }]);
     } else {
       Model.update(editandoId, form);
       setData((prev) => prev.map((s) => (s.id === editandoId ? { id: s.id, ...limpia } : s)));
@@ -329,7 +329,7 @@ const Positions: React.FC = () => {
                     Cancelar
                   </IonButton>
                   <IonButton className="on-btn on-btn--primary" onClick={guardar}>
-                    {modoEditar ? 'Guardar cambios' : 'Crear sucursal'}
+                    {modoEditar ? 'Guardar cambios' : 'Crear puesto'}
                   </IonButton>
                 </div>
               </div>

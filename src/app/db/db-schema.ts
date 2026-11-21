@@ -17,8 +17,9 @@ export const MIGRATIONS: Migration[] = [
     sql: `
       CREATE TABLE IF NOT EXISTS tipos (
         tipo_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,
+        nombre TEXT NOT NULL, 
         prefijo TEXT NOT NULL UNIQUE,
+        secuencia_inicial INTEGER NOT NULL DEFAULT 1,
         descripcion TEXT NULL,
         activo INTEGER NOT NULL DEFAULT 1
       );
@@ -62,7 +63,8 @@ export const MIGRATIONS: Migration[] = [
         nombre TEXT NOT NULL,
         hora_inicio TEXT NOT NULL,
         hora_fin TEXT NOT NULL,
-        secuencia_inicial INTEGER NOT NULL DEFAULT 1,
+        dias TEXT NOT NULL,
+        tipos TEXT NOT NULL,
         sucursal_id INTEGER REFERENCES sucursales(sucursal_id) ON DELETE SET NULL,
         activo INTEGER NOT NULL DEFAULT 1
       );

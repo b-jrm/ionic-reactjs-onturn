@@ -128,9 +128,10 @@ ion-input.on-input {
 /* ---------- Jornadas ---------- */
 .on-split { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; }
 .on-list { display: flex; flex-direction: column; gap: 12px; }
-.on-jornada { all: unset; box-sizing: border-box; cursor: pointer; background: #fff; border: 1px solid var(--on-border); border-radius: var(--on-radius-lg); padding: 18px 22px; display: block; width: 100%; }
+.on-jornada { all: unset; box-sizing: border-box; cursor: pointer; background: #fff; border: 1px solid var(--on-border); border-radius: var(--on-radius-lg); padding: 18px 22px; display: block; width: 100%; margin: 10px; }
 .on-jornada.is-selected { border: 2px solid var(--on-blue); padding: 17px 21px; }
 .on-jornada__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.on-jornada__row--text { text-align: center; gap: 10px; font-weight: 400; color: gray; }
 .on-jornada__title { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 700; flex-wrap: wrap; }
 .on-jornada__meta { margin-top: 6px; color: var(--on-muted); font-size: 15px; }
 ion-toggle.on-toggle { --track-background: #8e98ae; --track-background-checked: var(--on-blue); --handle-background: #fff; --handle-background-checked: #fff; }
@@ -142,7 +143,7 @@ ion-toggle.on-toggle { --track-background: #8e98ae; --track-background-checked: 
 .on-chip { all: unset; box-sizing: border-box; cursor: pointer; padding: 9px 18px; border-radius: 999px; border: 1px solid var(--on-border); font-weight: 600; background: #fff; }
 .on-chip.is-on { background: var(--on-blue-soft); border-color: var(--on-blue); color: #1b2fa0; }
 .on-actions { display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px; }
-.on-select { width: 100%; max-width: 100%; display: block; }
+.on-select { width: 100%; max-width: 100%; display: block; margin: 20px 0px; }
 
 /* ---------- Monitoreo ---------- */
 .on-stats5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 18px; }
