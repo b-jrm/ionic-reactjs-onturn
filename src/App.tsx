@@ -21,12 +21,16 @@ import Branches from './pages/Admin/Branches';
 import Dashboard from './pages/Admin/Dashboard';
 import Monitoring from './pages/Admin/Monitoring';
 import Positions from './pages/Admin/Positions';
+import Reports from './pages/Admin/Reports';
+import Services from './pages/Admin/Services';
+import Users from './pages/Admin/Users';
 import Workdays from './pages/Admin/Workdays';
 import MyTurn from './pages/Client/MyTurn';
 import RequestTurn from './pages/Client/RequestTurn';
 import Login from './pages/Login';
 import ServicePanel from './pages/Operator/ServicePanel';
 import RoomScreen from './pages/RoomScreen';
+
 
 setupIonicReact({ mode: 'md' });
 
@@ -58,13 +62,16 @@ const App: React.FC = () => {
           <Route path="/manage/positions" component={Positions} />
           <Route path="/manage/workdays" component={Workdays} />
           <Route path="/manage/branches" component={Branches} />
+          <Route path="/manage/services" component={Services} />
+          <Route path="/manage/users" component={Users} />
+          <Route path="/manage/reports" component={Reports} />
 
           {/* Operador */}
           <Route path="/operador" component={ServicePanel} />
 
           {/* Cliente (sin cuenta) */}
-          <Route path="/request" component={RequestTurn} />
-          <Route path="/me" component={MyTurn} />
+          <Route path="/turn/request" component={RequestTurn} />
+          <Route path="/turn/me" component={MyTurn} />
 
           {/* Pantalla pública */}
           <Route path="/room" component={RoomScreen} />

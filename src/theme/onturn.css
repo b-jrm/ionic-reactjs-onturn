@@ -86,7 +86,7 @@ ion-input.on-input {
 .on-badge--gray { background: var(--on-gray-soft); color: var(--on-muted); }
 
 /* ---------- Cards ---------- */
-.on-card { background: var(--on-surface); border: 1px solid var(--on-border); border-radius: var(--on-radius-lg); padding: 20px; }
+.on-card { background: var(--on-surface); border: 1px solid var(--on-border); border-radius: var(--on-radius-lg); padding: 20px; margin-top: 10px; }
 .on-card h2 { margin: 0 0 14px; font-size: 19px; font-weight: 700; }
 .on-stat { background: #fff; border: 1px solid var(--on-border); border-radius: var(--on-radius); padding: 14px 16px; }
 .on-stat span { display: block; font-size: 13px; color: var(--on-muted); }
@@ -130,7 +130,7 @@ ion-input.on-input {
 .on-list { display: flex; flex-direction: column; gap: 12px; }
 .on-jornada { all: unset; box-sizing: border-box; cursor: pointer; background: #fff; border: 1px solid var(--on-border); border-radius: var(--on-radius-lg); padding: 18px 22px; display: block; width: 100%; margin: 10px; }
 .on-jornada.is-selected { border: 2px solid var(--on-blue); padding: 17px 21px; }
-.on-jornada__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.on-jornada__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0px 10px; }
 .on-jornada__row--text { text-align: center; gap: 10px; font-weight: 400; color: gray; }
 .on-jornada__title { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 700; flex-wrap: wrap; }
 .on-jornada__meta { margin-top: 6px; color: var(--on-muted); font-size: 15px; }
@@ -139,7 +139,7 @@ ion-toggle.on-toggle { --track-background: #8e98ae; --track-background-checked: 
 .on-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 18px; }
 .on-day { all: unset; box-sizing: border-box; text-align: center; padding: 14px 0; border-radius: 8px; border: 1px solid var(--on-border); font-weight: 700; cursor: pointer; background: #fff; }
 .on-day.is-on { background: var(--on-blue); border-color: var(--on-blue); color: #fff; }
-.on-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.on-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 10px; }
 .on-chip { all: unset; box-sizing: border-box; cursor: pointer; padding: 9px 18px; border-radius: 999px; border: 1px solid var(--on-border); font-weight: 600; background: #fff; }
 .on-chip.is-on { background: var(--on-blue-soft); border-color: var(--on-blue); color: #1b2fa0; }
 .on-actions { display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px; }
@@ -241,9 +241,12 @@ ion-toggle.on-toggle { --track-background: #8e98ae; --track-background-checked: 
 .on-tv__queues { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
 .on-tv__q { border: 1px dashed var(--on-navy-3); border-radius: 14px; padding: 18px 22px; font-size: 22px; color: #dbe2f0; }
 .on-tv__q b { color: #fff; }
-.on-row-btn { padding: 3px; border-radius: 2px; margin: 2px; }
+.on-row-btn { padding: 5px; border-radius: 2px; margin: 2px; }
 .on-row-btn.on-row-btn--danger { background-color: #b51b13; }
 .on-row-btn.on-row-btn--success { background-color: #1d64d5; }
+.on-inline { display: inline-block; gap: 12px; text-align: center; }
+
+.on-error { white-space: pre-line; color: #bb3a2f; font-weight: 600; padding: 10px; }
 
 @keyframes on-pulse { 0% { box-shadow: 0 0 0 0 rgba(37,67,217,.6); } 70% { box-shadow: 0 0 0 28px rgba(37,67,217,0); } 100% { box-shadow: 0 0 0 0 rgba(37,67,217,0); } }
 .on-tv__now.is-calling { animation: on-pulse 1.8s infinite; }

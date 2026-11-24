@@ -1,5 +1,5 @@
 // src/pages/Login.tsx
-import { IonButton, IonContent, IonInput, IonPage, useIonRouter } from '@ionic/react';
+import { IonButton, IonContent, IonInput, IonPage, useIonRouter, IonCard, IonCardContent } from '@ionic/react';
 import { useState } from 'react';
 
 import { inputValue } from '../utils/ionValue';
@@ -84,10 +84,17 @@ const Login: React.FC = () => {
                 Ingresar
               </IonButton>
 
+              <IonCard className="on-field">
+                  <IonCardContent>
+                      <p>Capa de Seguridad/Autenticación no implementada, Para continuar&nbsp;&rarr;</p>
+                      <IonButton color="primary" routerLink="manage/dashboard">Ir al dashboard administrativo</IonButton>
+                  </IonCardContent>
+              </IonCard>
+
               <hr className="on-divider" />
               <p className="on-muted" style={{ margin: 0 }}>
                 ¿Eres cliente? No necesitas cuenta.{' '}
-                <button type="button" className="on-link" onClick={() => history.push('/turno/solicitar')}>
+                <button type="button" className="on-link" onClick={() => history.push('/turn/request')}>
                   Solicitar un turno
                 </button>
               </p>

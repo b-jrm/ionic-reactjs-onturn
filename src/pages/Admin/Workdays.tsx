@@ -70,6 +70,11 @@ const Jornadas: React.FC = () => {
       try {
         setTipos( await ModelTipo.getAll("tipo_id AS id, nombre") );
         setSucursales( await ModelSucursal.getAll("sucursal_id AS id, (nombre || ' (' || ciudad || ')') AS nombre") );
+        setTimeout(() => {
+          // console.log("ModelTipo.getAll", tipos);
+          // console.log("ModelSucursal.getAll", sucursales);
+          // console.log("data", data);
+        }, 500);
       } catch (error) {
         console.error('Error al cargar los datos:', error);
       }
@@ -79,10 +84,10 @@ const Jornadas: React.FC = () => {
       try {
         const data = await ModelJornada.getBySucursal(idSucursal);
         setJornadas(data);
-        // setTimeout(() => {
-        //   console.log("ModelJornada.getBySucursal", data);
-        //   // console.log("data", data);
-        // }, 500);
+        setTimeout(() => {
+          // console.log("ModelJornada.getBySucursal", data);
+          // console.log("data", data);
+        }, 500);
       } catch (error) {
         console.error('Error al cargar jornadas:', error);
         setJornadas([]);
@@ -101,10 +106,11 @@ const Jornadas: React.FC = () => {
 
   const seleccionar = (j: Jornada) => {
     setSeleccionada(j.id);
-    setBorrador({ ...j });
+    // setBorrador({ ...j });
   };
 
-  const toggleActiva = (id: number, estado: number) =>
+  const toggleActiva = (id: number, estado: number) => {
+    ModelJornada.update(id, {activo: estado});
     setJornadas((prev) =>
       prev.map((j) =>
         j.id === id
@@ -112,6 +118,7 @@ const Jornadas: React.FC = () => {
           : j
       )
     );
+  }
 
   const toggleDia = (i: number) =>
     setBorrador((b) => ({
@@ -193,7 +200,7 @@ const Jornadas: React.FC = () => {
     // console.log("resto", resto);
     setEditandoId(s.id);
     setBorrador(s);
-    console.log("borrador", borrador);
+    // console.log("borrador", borrador);
     setError('');
   };
 
@@ -223,8 +230,9 @@ const Jornadas: React.FC = () => {
               interface="action-sheet" 
               value={sucursal.id} 
               onIonChange={(e) => {
-                const currentSucursal = sucursales.find(s => s.id === Number(e.detail.value));
-                setSucursal({id: Number(e.detail.value), nombre: currentSucursal?.nombre ?? ''})}
+                  const currentSucursal = sucursales.find(s => s.id === Number(e.detail.value));
+                  setSucursal({id: Number(e.detail.value), nombre: currentSucursal?.nombre ?? ''})
+                }
               }
             >
               {sucursales.map((s) => (
@@ -241,20 +249,28 @@ const Jornadas: React.FC = () => {
                       key={j.id}
                       role="button"
                       tabIndex={0}
-                      className={`on-jornada ${seleccionada === j.id ? 'is-selected' : ''}`}
+                      className={`on-jornada ${editandoId === j.id ? 'is-selected' : ''}`}
                       onClick={() => seleccionar(j)}
                     >
                       <div className="on-jornada__row">
                         <div className="on-jornada__title">
                           {j.nombre}
-                          <span className={`on-badge ${badgeClass(j.activo)}`}>{j.activo}</span>
+                          <span className={`on-badge ${badgeClass(j.activo)}`}>{j.activo ? 'Activa' : 'Inactiva'}</span>
+                          <IonToggle
+                            className="on-toggle"
+                            checked={j.activo === 1}
+                            onClick={(e) => e.stopPropagation()}
+                            onIonChange={(e) => toggleActiva(j.id, e.detail.checked ? 1 : 0)}
+                          />
                         </div>
-                        <IonToggle
-                          className="on-toggle"
-                          checked={j.activo === 1}
-                          onClick={(e) => e.stopPropagation()}
-                          onIonChange={(e) => toggleActiva(j.id, e.detail.checked ? 1 : 0)}
-                        />
+                        <div className="on-row-actions">
+                          <button type="button" className="on-row-btn on-row-btn--success" onClick={() => editar(j)}>
+                            Editar&nbsp;&rarr;
+                          </button>
+                          {/* <button type="button" className="on-row-btn on-row-btn--danger" onClick={() => setAEliminar(s)}>
+                            Eliminar
+                          </button> */}
+                        </div>
                       </div>
                       <div className="on-chips">
                         {tipos
@@ -270,14 +286,6 @@ const Jornadas: React.FC = () => {
                       </div>
                       <div className="on-jornada__meta">
                         {j.hora_inicio} – {j.hora_fin} · {resumenDias(j.dias)}  {/* · {j.puestos} puestos */}
-                      </div>
-                      <div className="on-row-actions">
-                        <button type="button" className="on-row-btn on-row-btn--success" onClick={() => editar(j)}>
-                          Editar
-                        </button>
-                        {/* <button type="button" className="on-row-btn on-row-btn--danger" onClick={() => setAEliminar(s)}>
-                          Eliminar
-                        </button> */}
                       </div>
                     </div>
                   ))

@@ -5,7 +5,7 @@ import { sqliteService } from '../sqlite.service';
  */
 export interface Usuario {
   id: number;
-  nombre: string; // correo_electronico
+  correo_electronico: string;
   perfil_id: number;
   activo: number;
 }
@@ -14,16 +14,15 @@ export interface Usuario {
  * Datos necesarios para crear un Usuario.
  */
 export interface UsuarioCreate {
-  nombre: string; // correo_electronico
+  correo_electronico: string;
   perfil_id: number;
-  activo: number;
 }
 
 /**
  * Datos permitidos para actualizar un Usuario.
  */
 export interface UsuarioUpdate {
-  nombre?: string; // correo_electronico
+  correo_electronico?: string;
   perfil_id?: number;
   activo?: number;
 }
@@ -119,10 +118,12 @@ export class UsuarioService {
     const result = await this.db.run(
       `INSERT INTO usuarios (
         correo_electronico,
+        clave,
         perfil_id 
-      ) VALUES (?, ?)`,
+      ) VALUES (?, ?, ?)`,
       [
-        data.nombre,
+        data.correo_electronico,
+        data.correo_electronico.split('@')[0],
         data.perfil_id
       ]
     );
@@ -143,9 +144,9 @@ export class UsuarioService {
     const fields: string[] = [];
     const values: unknown[] = [];
 
-    if (data.nombre !== undefined) {
+    if (data.correo_electronico !== undefined) {
       fields.push('correo_electronico = ?');
-      values.push(data.nombre);
+      values.push(data.correo_electronico);
     }
 
     if (data.perfil_id !== undefined) {

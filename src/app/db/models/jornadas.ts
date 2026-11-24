@@ -14,6 +14,12 @@ export interface Jornada {
   activo: number;
 }
 
+export interface JornadaUnique {
+  id: number;
+  nombre: string;
+  tipos: number[];
+}
+
 /**
  * Datos necesarios para crear una Jornada.
  */
@@ -160,15 +166,95 @@ export class JornadaService {
 
     // console.log("result0", result);
 
-    const data = result.map((r: Jornada) => ({
-      ...r,
-      dias: r.dias ? String(r.dias).split("|").map(Number) : [],
-      tipos: r.tipos ? String(r.tipos).split("|").map(Number) : []
-    }));
+    result.map((r: Jornada) => {
+      
+      // console.log("r",r);
+      
+      if(typeof r.dias === 'string') r.dias = String(r.dias).split("|").map(Number);
+      if(typeof r.tipos === 'string') r.tipos = String(r.tipos).split("|").map(Number);
 
-    // console.log("data", data);
+      return {
+        ...r,
+        dias: r.dias,
+        tipos: r.tipos
+      }
+    });
 
-    return data;
+    // console.log("result1", result);
+
+    return result;
+  }
+
+  /**
+   * Obtener una jornada unica activa por ID de sucursal, que este dentro dentro del horario de consulta.
+   */
+  async getActiveUniqueBySucursal(id: number): Promise<JornadaUnique | null> {
+    await this.db.init();
+
+    const result = await this.db.query(
+      `WITH momento AS (
+        SELECT
+          time('now', 'localtime') AS hora_actual,
+          (CAST(strftime('%w', 'now', 'localtime') AS INTEGER) + 6) % 7 AS dia_actual
+      )
+      SELECT 
+          j.jornada_id AS id,
+          j.nombre,
+          j.tipos
+      FROM jornadas j
+      CROSS JOIN momento m
+      WHERE j.sucursal_id = ?
+        AND j.activo = 1
+
+        -- Validar día de inicio de la jornada
+        AND (
+          '|' || j.dias || '|'
+          LIKE '%|' ||
+          CASE
+            WHEN time(j.hora_inicio) > time(j.hora_fin)
+              AND m.hora_actual <= time(j.hora_fin)
+            THEN (m.dia_actual + 6) % 7
+            ELSE m.dia_actual
+          END
+          || '|%'
+        )
+
+        -- Validar horario
+        AND (
+          (
+            time(j.hora_inicio) <= time(j.hora_fin)
+            AND m.hora_actual BETWEEN time(j.hora_inicio) AND time(j.hora_fin)
+          )
+          OR
+          (
+            time(j.hora_inicio) > time(j.hora_fin)
+            AND (
+              m.hora_actual >= time(j.hora_inicio)
+              OR m.hora_actual <= time(j.hora_fin)
+            )
+          )
+        )
+      LIMIT 1`,
+      [id]
+    );
+
+    // console.log("result.jornada_disponible", result);
+
+    result.map((r: JornadaUnique) => {
+      
+      // console.log("r",r);
+      
+      if(typeof r.tipos === 'string') r.tipos = String(r.tipos).split("|").map(Number);
+
+      return {
+        ...r,
+        tipos: r.tipos
+      }
+    });
+
+    // console.log("result1", result);
+
+    return result.length > 0 ? result[0] : null;
   }
 
   async getNextId(): Promise<number> {

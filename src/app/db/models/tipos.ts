@@ -66,10 +66,9 @@ export class TipoService {
           secuencia_inicial,
           descripcion,
           activo 
-        FROM tipos WHERE activo = 1` // ORDER BY tipo_id DESC
+        FROM tipos` // WHERE activo = 1 ORDER BY tipo_id DESC
       );
     }
-
     
   }
 
@@ -112,6 +111,33 @@ export class TipoService {
     return result[0] ?? null;
   }
 
+  async getTypeFilter(ids: number[]): Promise<Tipo[]> {
+    await this.db.init();
+
+    console.log("ids", ids);
+
+    if (ids.length === 0) return [];
+
+    const placeholders = ids.map(() => '?').join(', ');
+
+    const result = await this.db.query(
+      `SELECT
+          tipo_id AS id, 
+          nombre,
+          prefijo,
+          secuencia_inicial,
+          descripcion,
+          activo 
+        FROM tipos
+        WHERE tipo_id IN (${placeholders})`,
+      ids
+    );
+
+    console.log("result", result);
+
+    return result;
+  }
+
   /**
    * Obtener el siguiente ID de Tipo de atención.
    */
@@ -129,13 +155,12 @@ export class TipoService {
    */
   async create(data: TipoCreate): Promise<number> {
     await this.db.init();
-
     const result = await this.db.run(
       `INSERT INTO tipos (
         nombre,
         prefijo,
         secuencia_inicial,
-        descripcion, 
+        descripcion 
       ) VALUES (?, ?, ?, ?)`,
       [
         data.nombre,

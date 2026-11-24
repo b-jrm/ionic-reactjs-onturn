@@ -28,6 +28,11 @@ interface DataForeign {
   nombre: string;
 }
 
+interface DataForeignUser {
+  id: number;
+  correo_electronico: string;
+}
+
 type FormData = Omit<Data, 'id'>;
 
 const VACIA: FormData = {
@@ -46,7 +51,7 @@ const Positions: React.FC = () => {
 
   const [data, setData] = useState<Data[]>([]);
   const [sucursales, setSucursales] = useState<DataForeign[]>([]);
-  const [usuarios, setUsuario] = useState<DataForeign[]>([]);
+  const [usuarios, setUsuario] = useState<DataForeignUser[]>([]);
   const [busqueda, setBusqueda] = useState('');
   const [editandoId, setEditandoId] = useState<number | null>(null); // null = modo crear
   const [form, setForm] = useState<FormData>(VACIA);
@@ -59,7 +64,7 @@ const Positions: React.FC = () => {
       // console.log("ModelSucursal.getAll", await ModelSucursal.getAll("sucursal_id AS id, nombre"));
       setSucursales( await ModelSucursal.getAll("sucursal_id AS id, (nombre || ' (' || ciudad || ')') AS nombre") );
     //   console.log("sucursales",sucursales);
-      setUsuario( await ModelUsuario.getAll("usuario_id AS id, correo_electronico AS nombre") );
+      setUsuario( await ModelUsuario.getAll("usuario_id AS id, correo_electronico") );
     //   console.log("usuarios",usuarios);
     } catch (error) {
       console.error('Error al cargar los datos:', error);
@@ -301,11 +306,11 @@ const Positions: React.FC = () => {
                         onIonChange={(e) => {
                             const usuario = usuarios.find(u => u.id === Number(e.detail.value));
                             setCampo('usuario_id', e.detail.value);
-                            setCampo('usuario', usuario?.nombre ?? '');
+                            setCampo('usuario', usuario?.correo_electronico ?? '');
                         }}
                     >
                         {usuarios.map((u) => (
-                          <IonSelectOption key={u.id} value={u.id}>{u.nombre}</IonSelectOption>
+                          <IonSelectOption key={u.id} value={u.id}>{u.correo_electronico}</IonSelectOption>
                         ))}
                     </IonSelect>
                 </div>
