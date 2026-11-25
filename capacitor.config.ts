@@ -3,7 +3,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'com.onturn.app',
   appName: 'Onturn',
-  webDir: 'www', // Ionic Angular compila a "www"
+  webDir: 'dist', // Ionic Angular compila a "www"
   plugins: {
     CapacitorSQLite: {
       iosDatabaseLocation: 'Library/CapacitorDatabase',

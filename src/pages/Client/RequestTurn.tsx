@@ -142,7 +142,7 @@ const SolicitarTurno: React.FC = () => {
               <label className="on-label">Sucursal</label>
               <IonSelect
                   placeholder="Seleccionar Sucursal"
-                  interface="alert" 
+                  interface="popover" 
                   value={form.sucursal_id} 
                   onIonChange={(e) => {
                       const currentSucursal = sucursales.find(s => s.id === Number(e.detail.value));

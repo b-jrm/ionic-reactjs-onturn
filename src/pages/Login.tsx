@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     // TODO: reemplazar por la autenticación real
     ModelUsuario.getAuth(usuario, password, rol).then(isAuth => {
         // console.log("Autenticado:", isAuth);
-        if(isAuth) history.push(rol === 'Administrador' ? '/manage/dashboard' : '/operador');
+        if(isAuth) history.push(rol === 'Administrador' ? '/manage/users' : '/operador');
         else{
           setError('Credenciales incorrectas');
           return;
@@ -30,7 +30,7 @@ const Login: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent className="on-content" scrollY={false}>
+      <IonContent className="on-content" scrollY={true}>
         <div className="on-login">
           {/* Panel de marca */}
           <section className="on-login__brand">
@@ -72,10 +72,10 @@ const Login: React.FC = () => {
               </div>
 
               <div className="on-field">
-                <label className="on-label">Usuario</label>
+                <label className="on-label">Correo electrónico</label>
                 <IonInput
                   className="on-input"
-                  placeholder="correo o usuario"
+                  placeholder="Correo electrónico"
                   value={usuario}
                   onIonInput={(e) => setUsuario(inputValue(e))}
                 />
@@ -85,7 +85,8 @@ const Login: React.FC = () => {
                 <label className="on-label">Contraseña</label>
                 <IonInput
                   className="on-input"
-                  type="password"
+                  type="password" 
+                  placeholder="Contraseña"
                   value={password}
                   onIonInput={(e) => setPassword(inputValue(e))}
                 />
@@ -99,8 +100,42 @@ const Login: React.FC = () => {
 
               <IonCard className="on-field">
                   <IonCardContent>
-                      <p>Capa de Seguridad/Autenticación no implementada, Para continuar&nbsp;&rarr;</p>
-                      <IonButton color="primary" routerLink="manage/dashboard">Ir al dashboard administrativo</IonButton>
+                      <b>PRUEBAS ADMIN</b>
+                      <p><b>Usuario:&nbsp;</b>admin@onturn.co</p>
+                      <IonButton
+                          size="small"
+                          fill="outline"
+                          onClick={() => navigator.clipboard.writeText('admin@onturn.co')}
+                      >
+                          Copiar usuario admin
+                      </IonButton>
+                      <p><b>Clave:&nbsp;</b>admin</p>
+                      <IonButton
+                          size="small"
+                          fill="outline"
+                          onClick={() => navigator.clipboard.writeText('admin')}
+                      >
+                          Copiar clave admin
+                      </IonButton>
+                      <br />
+                      <b>PRUEBAS OPERADOR</b>
+                      <p><b>Usuario:&nbsp;</b>operator1@onturn.co</p>
+                      <IonButton
+                          size="small"
+                          fill="outline"
+                          onClick={() => navigator.clipboard.writeText('operator1@onturn.co')}
+                      >
+                          Copiar usuario operador
+                      </IonButton>
+                      <p><b>Clave:&nbsp;</b>operator1</p>
+                      <IonButton
+                          size="small"
+                          fill="outline"
+                          onClick={() => navigator.clipboard.writeText('operator1')}
+                      >
+                          Copiar clave operador
+                      </IonButton>
+                      {/* <IonButton color="primary" routerLink="manage/dashboard">Ir al dashboard administrativo</IonButton> */}
                   </IonCardContent>
               </IonCard>
 

@@ -2,7 +2,7 @@
 import type { NavItem } from '../../components/SideLayout';
 
 export const adminNav: NavItem[] = [
-  { label: 'Panel', to: '/manage/dashboard' },
+  // { label: 'Panel', to: '/manage/dashboard' },
   { label: 'Usuarios', to: '/manage/users' },
   { label: 'Sucursales', to: '/manage/branches' },
   { label: 'Puestos', to: '/manage/positions' },

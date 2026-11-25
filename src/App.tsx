@@ -1,5 +1,5 @@
 // src/App.tsx
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonContent, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 // import { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
@@ -18,7 +18,7 @@ import './theme/onturn.css';
 
 // import { sqliteService } from './app/db/sqlite.service';
 import Branches from './pages/Admin/Branches';
-import Dashboard from './pages/Admin/Dashboard';
+// import Dashboard from './pages/Admin/Dashboard';
 import Monitoring from './pages/Admin/Monitoring';
 import Positions from './pages/Admin/Positions';
 import Reports from './pages/Admin/Reports';
@@ -52,33 +52,35 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route path="/login" component={Login} />
-          {/* Administrador */}
-          <Route exact path="/manage"><Redirect to="/login" /></Route>
-          <Route path="/manage/dashboard" component={Dashboard} />
-          <Route path="/manage/monitoring" component={Monitoring} />
-          <Route path="/manage/positions" component={Positions} />
-          <Route path="/manage/workdays" component={Workdays} />
-          <Route path="/manage/branches" component={Branches} />
-          <Route path="/manage/services" component={Services} />
-          <Route path="/manage/users" component={Users} />
-          <Route path="/manage/reports" component={Reports} />
+      <IonContent scrollY={true}>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route path="/login" component={Login} />
+            {/* Administrador */}
+            <Route exact path="/manage"><Redirect to="/login" /></Route>
+            {/* <Route path="/manage/dashboard" component={Dashboard} /> */}
+            <Route path="/manage/monitoring" component={Monitoring} />
+            <Route path="/manage/positions" component={Positions} />
+            <Route path="/manage/workdays" component={Workdays} />
+            <Route path="/manage/branches" component={Branches} />
+            <Route path="/manage/services" component={Services} />
+            <Route path="/manage/users" component={Users} />
+            <Route path="/manage/reports" component={Reports} />
 
-          {/* Operador */}
-          <Route path="/operador" component={ServicePanel} />
+            {/* Operador */}
+            <Route path="/operador" component={ServicePanel} />
 
-          {/* Cliente (sin cuenta) */}
-          <Route path="/turn/request" component={RequestTurn} />
-          <Route path="/turn/me" component={MyTurn} />
+            {/* Cliente (sin cuenta) */}
+            <Route path="/turn/request" component={RequestTurn} />
+            <Route path="/turn/me" component={MyTurn} />
 
-          {/* Pantalla pública */}
-          <Route path="/room" component={RoomScreen} />
+            {/* Pantalla pública */}
+            <Route path="/room" component={RoomScreen} />
 
-          <Route exact path="/"><Redirect to="/login" /></Route>
-        </IonRouterOutlet>
-      </IonReactRouter>
+            <Route exact path="/"><Redirect to="/login" /></Route>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </IonContent>
     </IonApp>
   );
 };

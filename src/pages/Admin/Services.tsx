@@ -148,7 +148,7 @@ const Services: React.FC = () => {
         <SideLayout
           items={adminNav}
           activePath="/manage/services"
-          user={{ name: 'Carlos Ruiz', role: 'Administrador' }}
+          user={{ name: 'admin@onturn.co', role: 'Administrador' }}
         >
           <div className="on-main">
             <div className="on-main__head">

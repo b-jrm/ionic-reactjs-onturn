@@ -1,6 +1,7 @@
 // src/components/SideLayout.tsx
 import { useIonRouter } from '@ionic/react';
 import type { ReactNode } from 'react';
+import { useState, useEffect } from 'react';
 
 export interface NavItem {
   label: string;
@@ -19,6 +20,24 @@ interface Props {
 const SideLayout: React.FC<Props> = ({ items, activePath, user, userOnTop, children }) => {
   const history = useIonRouter();
 
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      console.log("window.innerWidth <= 768", window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkScreen();
+
+    window.addEventListener('resize', checkScreen);
+
+    return () => {
+      window.removeEventListener('resize', checkScreen);
+    };
+  }, []);
+
   const userCard = (
     <div className="on-user">
       <strong>{user.name}</strong>
@@ -28,7 +47,24 @@ const SideLayout: React.FC<Props> = ({ items, activePath, user, userOnTop, child
 
   return (
     <div className="on-shell">
-      <aside className="on-side">
+      <aside className={`on-side ${isMobile ? (menuOpen ? 'on-side--show' : 'on-side--hide') : ''}`}>
+
+        { isMobile ? (
+          <div className="on-side-top">
+              <button
+              className="on-side-toggle"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? '✕' : '☰'}
+            </button>
+          </div>
+        ) : (
+          <></>
+        ) }
+        
+
         <div className="on-side__brand">Onturn</div>
         {userOnTop && userCard}
         <nav className="on-side__nav" style={userOnTop ? { marginTop: 12 } : undefined}>

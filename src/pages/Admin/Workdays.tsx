@@ -212,7 +212,7 @@ const Jornadas: React.FC = () => {
         <SideLayout
           items={adminNav}
           activePath="/manage/workdays"
-          user={{ name: 'Carlos Ruiz', role: 'Administrador' }}
+          user={{ name: 'admin@onturn.co', role: 'Administrador' }}
         >
           <div className="on-main">
             <div className="on-main__head">
@@ -227,7 +227,7 @@ const Jornadas: React.FC = () => {
 
             <IonSelect
               placeholder="Seleccionar Sucursal"
-              interface="action-sheet" 
+              interface="popover" 
               value={sucursal.id} 
               onIonChange={(e) => {
                   const currentSucursal = sucursales.find(s => s.id === Number(e.detail.value));

@@ -69,20 +69,6 @@ export const MIGRATIONS: Migration[] = [
         activo INTEGER NOT NULL DEFAULT 1
       );
 
-      CREATE TABLE IF NOT EXISTS jornadas_dias (
-        jornada_dia_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        jornada_id INTEGER REFERENCES jornadas(jornada_id) ON DELETE SET NULL,
-        dia_id INTEGER REFERENCES dias(dia_id) ON DELETE SET NULL,
-        activo INTEGER NOT NULL DEFAULT 1
-      );
-
-      CREATE TABLE IF NOT EXISTS jornadas_tipos (
-        jornada_tipo_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        jornada_id INTEGER REFERENCES jornadas(jornada_id) ON DELETE SET NULL,
-        tipo_id INTEGER REFERENCES tipos(tipo_id) ON DELETE SET NULL,
-        activo INTEGER NOT NULL DEFAULT 1
-      );
-
       CREATE TABLE IF NOT EXISTS puestos (
         puesto_id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL,
@@ -115,8 +101,6 @@ export const MIGRATIONS: Migration[] = [
         ('Reclamos y PQRS',     'R', 'Quejas y sugerencias'),
         ('Atención prioritaria','P', 'Adultos mayores y embarazadas');
 
-      INSERT OR IGNORE INTO dias (dia) VALUES ('Lunes'), ('Martes'), ('Miercoles'), ('Jueves'), ('Viernes'), ('Sabado'), ('Domingo');
-
       INSERT OR IGNORE INTO perfiles (nombre) VALUES ('Administrador'), ('Operador'), ('Cliente');
 
       INSERT OR IGNORE INTO sucursales (nombre, telefono, direccion, ciudad) VALUES 
@@ -129,6 +113,12 @@ export const MIGRATIONS: Migration[] = [
         ('admin@onturn.co', 'admin', (SELECT perfil_id FROM perfiles WHERE nombre = 'Administrador' LIMIT 1)),
         ('operator1@onturn.co', 'operator1', (SELECT perfil_id FROM perfiles WHERE nombre = 'Operador' LIMIT 1)),
         ('operator2@onturn.co', 'operator2', (SELECT perfil_id FROM perfiles WHERE nombre = 'Operador' LIMIT 1));
+
+      INSERT OR IGNORE INTO jornadas (nombre, hora_inicio, dias, tipos, sucursal_id) VALUES 
+        ('Jornada Única', '08:00', '22:00', '1|2|3|4|5', '1|2|3', (SELECT sucursal_id FROM sucursales WHERE nombre = 'Sede Centro' LIMIT 1)),
+        ('Jornada Única', '08:00', '22:00', '1|2|3|4|5', '1|2|3', (SELECT sucursal_id FROM sucursales WHERE nombre = Sede Norte' LIMIT 1)),
+        ('Jornada Única', '08:00', '22:00', '1|2|3|4|5', '1|2|3', (SELECT sucursal_id FROM sucursales WHERE nombre = Sede Cali' LIMIT 1)),
+        ('Jornada Única', '08:00', '22:00', '1|2|3|4|5', '1|2|3', (SELECT sucursal_id FROM sucursales WHERE nombre = Sede Medellín' LIMIT 1));
 
     `,
   },

@@ -149,7 +149,7 @@ const Positions: React.FC = () => {
         <SideLayout
           items={adminNav}
           activePath="/manage/users"
-          user={{ name: 'Carlos Ruiz', role: 'Administrador' }}
+          user={{ name: 'admin@onturn.co', role: 'Administrador' }}
         >
           <div className="on-main">
             <div className="on-main__head">
@@ -222,8 +222,8 @@ const Positions: React.FC = () => {
                   {filtradas.length === 0 && (
                     <div className="on-empty">
                       {data.length === 0
-                        ? 'Aún no hay puestos. Crea el primero.'
-                        : 'No se encontraron puestos con ese criterio.'}
+                        ? 'Aún no hay usuarios. Crea el primero.'
+                        : 'No se encontraron usuarios con ese criterio.'}
                     </div>
                   )}
                 </div>
@@ -235,7 +235,7 @@ const Positions: React.FC = () => {
 
               {/* ---------- Formulario crear / editar ---------- */}
               <div className="on-card">
-                <h2>{modoEditar ? 'Editar puesto' : 'Nuevo puesto'}</h2>
+                <h2>{modoEditar ? 'Editar usuario' : 'Nuevo usuario'}</h2>
 
                 <div className="on-field">
                   <label className="on-label">Correo electrónico</label>
