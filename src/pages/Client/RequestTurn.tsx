@@ -91,25 +91,26 @@ const SolicitarTurno: React.FC = () => {
       setForm((f) => ({ ...f, [campo]: valor }));
   }
 
-  const cargarJornada = async (idSucursal: number) => {
-    try {
-      // console.log("idSucursal",idSucursal);
-      const data = await ModelJornada.getActiveUniqueBySucursal(idSucursal);
-      // console.log("data",data);
-      setJornada(data);
-      if(data?.id && data.tipos){
-        setCampo("jornada_id", data.id);
-        setTipos( await ModelTipo.getTypeFilter(data.tipos) );
-      }else{
-        setTipos([]);
-      }
-    } catch (error) {
-      console.error('Error al cargar jornada:', error);
-      setJornada(VACIAJORNADA);
-    }
-  };
+  
 
   useEffect(() => {
+    const cargarJornada = async (idSucursal: number) => {
+      try {
+        // console.log("idSucursal",idSucursal);
+        const data = await ModelJornada.getActiveUniqueBySucursal(idSucursal);
+        // console.log("data",data);
+        setJornada(data);
+        if(data?.id && data.tipos){
+          setCampo("jornada_id", data.id);
+          setTipos( await ModelTipo.getTypeFilter(data.tipos) );
+        }else{
+          setTipos([]);
+        }
+      } catch (error) {
+        console.error('Error al cargar jornada:', error);
+        setJornada(VACIAJORNADA);
+      }
+    };
     const cargar = async () => await cargarJornada(sucursal.id);
     void cargar();
   }, [sucursal]);
