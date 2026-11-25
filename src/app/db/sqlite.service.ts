@@ -64,14 +64,14 @@ class SqliteService {
         await this.db.open();
       }
 
-      console.log('Conexión SQLite abierta:', DB_NAME);
+      // console.log('Conexión SQLite abierta:', DB_NAME);
 
       // Ejecutar operaciones solamente después de abrir la conexión.
       await this.db.execute('PRAGMA foreign_keys = ON;');
 
       await this.migrate();
 
-      console.log('SQLite inicializado correctamente');
+      // console.log('SQLite inicializado correctamente');
 
     } catch (error) {
       this.starting = undefined;

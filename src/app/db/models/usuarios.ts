@@ -100,6 +100,35 @@ export class UsuarioService {
     return result[0] ?? null;
   }
 
+  async getAuth(user: string, pass: string, prof: string): Promise<number> {
+    await this.db.init();
+
+    // console.log("user", user);
+    // console.log("pass", pass);
+    // console.log("prof", prof);
+    // console.log("PASS:", JSON.stringify(pass));
+    // console.log("PASS LENGTH:", pass.length);
+
+    const result = await this.db.query(
+      `SELECT
+        u.usuario_id AS id
+        FROM usuarios u
+        INNER JOIN perfiles p ON p.perfil_id = u.perfil_id
+        WHERE u.activo = 1 AND u.correo_electronico = ? AND p.nombre = ? AND u.clave = ?`, // u.correo_electronico = ? AND AND p.nombre = ? 
+      [user, prof, pass]
+    );
+
+    // console.log("result.result", result[0]?.id);
+
+    // const isAuth = result.find((r: any) => {
+    //   console.log("r.clave == pass", r.clave + " == "+ pass + " => "+(r.clave == pass));
+    //   if(r.clave == pass) return true;
+    // });
+    // console.log("result.getAuth", isAuth);
+    
+    return result[0]?.id || 0;
+  }
+
   async getNextId(): Promise<number> {
     await this.db.init();
     const next = await this.db.query(

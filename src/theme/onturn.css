@@ -168,7 +168,9 @@ ion-toggle.on-toggle { --track-background: #8e98ae; --track-background-checked: 
 .on-kiosk__body { flex: 1; padding: 48px 8%; }
 .on-kiosk__body h1 { font-size: 36px; font-weight: 700; margin: 0; letter-spacing: -.5px; }
 .on-tipos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
-.on-tipo { all: unset; box-sizing: border-box; cursor: pointer; background: #fff; border: 1px solid var(--on-border); border-radius: var(--on-radius-lg); padding: 26px 24px; display: flex; align-items: center; gap: 18px; }
+.on-tipo, .on-tipo--empty { all: unset; box-sizing: border-box; cursor: pointer; background: #fff; border: 1px solid var(--on-border); border-radius: var(--on-radius-lg); padding: 26px 24px; display: flex; align-items: center; gap: 18px; }
+.on-tipo--empty { margin: 20px; }
+.on-tipo--empty-text { color: gray; font-size: 12px; }
 .on-tipo.is-selected { background: #e8ebfb; border: 2px solid var(--on-blue); padding: 25px 23px; }
 .on-tipo__letter { width: 52px; height: 52px; flex: none; border-radius: 10px; background: var(--on-blue); color: #fff; display: grid; place-items: center; font-size: 24px; font-weight: 700; }
 .on-tipo strong { display: block; font-size: 21px; font-weight: 700; }
@@ -178,7 +180,8 @@ ion-toggle.on-toggle { --track-background: #8e98ae; --track-background-checked: 
 .on-footbar__sel b { color: var(--on-text); }
 .on-footbar__right { display: flex; align-items: flex-end; gap: 12px; }
 .on-footbar__right ion-input { width: 220px; }
-
+.on-grid--form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+.on-required-input { color: red; font-weight: 800; }
 /* ---------- Mi turno (móvil cliente) ---------- */
 .on-mobile { max-width: 520px; margin: 0 auto; padding: 18px 20px 24px; display: flex; flex-direction: column; min-height: 100%; gap: 12px; }
 .on-mobile__top { display: flex; justify-content: space-between; align-items: center; }

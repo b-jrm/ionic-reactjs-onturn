@@ -238,14 +238,14 @@ const Positions: React.FC = () => {
                 <h2>{modoEditar ? 'Editar puesto' : 'Nuevo puesto'}</h2>
 
                 <div className="on-field">
-                <label className="on-label">Correo electrónico</label>
-                <IonInput
-                    type='email'
-                    className="on-input"
-                    placeholder="Correo electrónico"
-                    value={form.correo_electronico}
-                    onIonInput={(e) => setCampo('correo_electronico', inputValue(e))}
-                />
+                  <label className="on-label">Correo electrónico</label>
+                  <IonInput
+                      type='email'
+                      className="on-input"
+                      placeholder="Correo electrónico"
+                      value={form.correo_electronico}
+                      onIonInput={(e) => setCampo('correo_electronico', inputValue(e))}
+                  />
                 </div>
 
                 <div className="on-field">

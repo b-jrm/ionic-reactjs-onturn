@@ -164,7 +164,7 @@ export class JornadaService {
       [id]
     );
 
-    // console.log("result0", result);
+    console.log("result.getBySucursal", result);
 
     result.map((r: Jornada) => {
       
@@ -186,18 +186,61 @@ export class JornadaService {
   }
 
   /**
-   * Obtener una jornada unica activa por ID de sucursal, que este dentro dentro del horario de consulta.
+   * Obtener una jornada unica activa por ID de sucursal, que este dentro dentro del dia y hora de consulta.
    */
   async getActiveUniqueBySucursal(id: number): Promise<JornadaUnique | null> {
     await this.db.init();
 
+    const now = new Date();
+    const numberDay = now.getDay();
+
+    // Hora local en formato HH:mm
+    const hour = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+    // console.log("numberDay",numberDay);
+    // console.log("hour",hour);
+
+    // const result = await this.db.query(
+    //   `WITH momento AS (
+    //     SELECT
+    //       ? AS hora_actual,
+    //       ? AS dia_actual
+    //   )
+    //   SELECT 
+    //     j.jornada_id AS id, 
+    //     j.nombre,
+    //     j.hora_inicio,
+    //     j.hora_fin,
+    //     j.sucursal_id,
+    //     CAST(j.dias AS BLOB) AS dias,
+    //     typeof(j.dias) AS tipo_dias,
+    //     j.tipos,
+    //     j.activo,
+    //     m.hora_actual,
+    //     m.dia_actual,
+    //     CASE
+    //       WHEN hex(j.dias) LIKE '%' || printf('%02X', m.dia_actual) || '%'
+    //         THEN 'Si aplica'
+    //         ELSE 'No aplica'
+    //     END AS aplica_hoy
+    //     CASE
+    //       WHEN hex(j.dias) LIKE '%' || printf('%02X', m.dia_actual) || '%'
+    //         THEN 'Si aplica'
+    //         ELSE 'No aplica'
+    //     END AS aplica_hoy
+    //   FROM jornadas j 
+    //     CROSS JOIN momento m
+    //     WHERE j.sucursal_id = ?`,
+    //   [hour, numberDay, id]
+    // );
+
     const result = await this.db.query(
       `WITH momento AS (
         SELECT
-          time('now', 'localtime') AS hora_actual,
-          (CAST(strftime('%w', 'now', 'localtime') AS INTEGER) + 6) % 7 AS dia_actual
+          ? AS hora_actual,
+          ? AS dia_actual
       )
-      SELECT 
+      SELECT
           j.jornada_id AS id,
           j.nombre,
           j.tipos
@@ -208,34 +251,27 @@ export class JornadaService {
 
         -- Validar día de inicio de la jornada
         AND (
-          '|' || j.dias || '|'
-          LIKE '%|' ||
-          CASE
-            WHEN time(j.hora_inicio) > time(j.hora_fin)
-              AND m.hora_actual <= time(j.hora_fin)
-            THEN (m.dia_actual + 6) % 7
-            ELSE m.dia_actual
-          END
-          || '|%'
+          hex(j.dias) LIKE '%' || printf('%02X', m.dia_actual) || '%'
         )
 
         -- Validar horario
         AND (
           (
-            time(j.hora_inicio) <= time(j.hora_fin)
-            AND m.hora_actual BETWEEN time(j.hora_inicio) AND time(j.hora_fin)
+            time(j.hora_inicio) < time(j.hora_fin)
+            AND time(m.hora_actual)
+              BETWEEN time(j.hora_inicio) AND time(j.hora_fin)
           )
           OR
           (
             time(j.hora_inicio) > time(j.hora_fin)
             AND (
-              m.hora_actual >= time(j.hora_inicio)
-              OR m.hora_actual <= time(j.hora_fin)
+              time(m.hora_actual) >= time(j.hora_inicio)
+              OR time(m.hora_actual) <= time(j.hora_fin)
             )
           )
         )
       LIMIT 1`,
-      [id]
+      [hour, numberDay, id]
     );
 
     // console.log("result.jornada_disponible", result);

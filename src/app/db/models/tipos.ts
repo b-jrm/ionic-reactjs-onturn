@@ -114,11 +114,16 @@ export class TipoService {
   async getTypeFilter(ids: number[]): Promise<Tipo[]> {
     await this.db.init();
 
-    console.log("ids", ids);
+    // Normalizar los IDs
+    ids = Array.from(ids as any).map(Number);
+
+    // console.log("ids", ids);
 
     if (ids.length === 0) return [];
 
     const placeholders = ids.map(() => '?').join(', ');
+
+    // console.log("placeholders", placeholders);
 
     const result = await this.db.query(
       `SELECT
@@ -133,7 +138,7 @@ export class TipoService {
       ids
     );
 
-    console.log("result", result);
+    // console.log("result", result);
 
     return result;
   }

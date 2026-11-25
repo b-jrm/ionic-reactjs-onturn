@@ -2,19 +2,30 @@
 import { IonButton, IonContent, IonInput, IonPage, useIonRouter, IonCard, IonCardContent } from '@ionic/react';
 import { useState } from 'react';
 
+import { Model as ModelUsuario } from '../app/db/models/usuarios';
 import { inputValue } from '../utils/ionValue';
 
-type Rol = 'operador' | 'administrador';
+type Rol = 'Operador' | 'Administrador';
 
 const Login: React.FC = () => {
   const history = useIonRouter();
-  const [rol, setRol] = useState<Rol>('operador');
+  const [rol, setRol] = useState<Rol>('Operador');
   const [usuario, setUsuario] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const ingresar = () => {
+    setError('');
     // TODO: reemplazar por la autenticación real
-    history.push(rol === 'administrador' ? '/admin/monitoreo' : '/operador');
+    ModelUsuario.getAuth(usuario, password, rol).then(isAuth => {
+        // console.log("Autenticado:", isAuth);
+        if(isAuth) history.push(rol === 'Administrador' ? '/manage/dashboard' : '/operador');
+        else{
+          setError('Credenciales incorrectas');
+          return;
+        }
+    });
+
   };
 
   return (
@@ -47,14 +58,14 @@ const Login: React.FC = () => {
 
               <div className="on-segment">
                 <button
-                  className={rol === 'operador' ? 'is-active' : ''}
-                  onClick={() => setRol('operador')}
+                  className={rol === 'Operador' ? 'is-active' : ''}
+                  onClick={() => setRol('Operador')}
                 >
                   Operador
                 </button>
                 <button
-                  className={rol === 'administrador' ? 'is-active' : ''}
-                  onClick={() => setRol('administrador')}
+                  className={rol === 'Administrador' ? 'is-active' : ''}
+                  onClick={() => setRol('Administrador')}
                 >
                   Administrador
                 </button>
@@ -79,6 +90,8 @@ const Login: React.FC = () => {
                   onIonInput={(e) => setPassword(inputValue(e))}
                 />
               </div>
+
+              {error && <p className="on-error">{error}</p>}
 
               <IonButton className="on-btn on-btn--primary on-btn--block" onClick={ingresar}>
                 Ingresar

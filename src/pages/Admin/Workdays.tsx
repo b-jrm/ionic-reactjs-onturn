@@ -28,11 +28,11 @@ interface DataForeign {
   nombre: string;
 }
 
-const DIAS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
-const DIAS_TXT = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+const DIAS = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
+const DIAS_TXT = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 // const TIPOS = ['General', 'Caja', 'Asesoría', 'Reclamos', 'Prioritaria', 'Cita agendada'];
 
-const VACIO: Jornada = { id: 0, nombre: '', hora_inicio: '08:00', hora_fin: '12:00', sucursal_id: 0, activo: 0, dias: [], tipos: [] };
+const VACIO: Jornada = { id: 0, nombre: '', hora_inicio: '08:00', hora_fin: '17:00', sucursal_id: 0, activo: 0, dias: [], tipos: [] };
 // const INICIALES: Jornada[] = [
 //   { id: 1, nombre: 'Jornada de la mañana', inicio: '07:30', fin: '13:00', dias: [0, 1, 2, 3, 4], puestos: 5, activa: true, estado: 'Activa ahora', tipos: ['General', 'Caja', 'Asesoría', 'Reclamos', 'Prioritaria'] },
 //   { id: 2, nombre: 'Jornada de la tarde', inicio: '13:30', fin: '18:00', dias: [0, 1, 2, 3, 4], puestos: 4, activa: false, estado: 'Programada', tipos: ['General', 'Caja'] },

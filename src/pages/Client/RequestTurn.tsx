@@ -1,5 +1,5 @@
 // src/pages/cliente/SolicitarTurno.tsx
-import { IonButton, IonContent, IonPage, useIonRouter, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonButton, IonContent, IonPage, IonSelect, IonSelectOption, IonInput, useIonRouter } from '@ionic/react';
 import { useState, useEffect } from 'react';
 
 import { Model as ModelJornada } from '../../app/db/models/jornadas';
@@ -87,14 +87,21 @@ const SolicitarTurno: React.FC = () => {
     void cargar();
   }, []);
 
+  const setCampo = <K extends keyof TurnFormData>(campo: K, valor: TurnFormData[K]) => {
+      setForm((f) => ({ ...f, [campo]: valor }));
+  }
+
   const cargarJornada = async (idSucursal: number) => {
     try {
-      console.log("idSucursal",idSucursal);
+      // console.log("idSucursal",idSucursal);
       const data = await ModelJornada.getActiveUniqueBySucursal(idSucursal);
-      console.log("data",data);
+      // console.log("data",data);
       setJornada(data);
       if(data?.id && data.tipos){
+        setCampo("jornada_id", data.id);
         setTipos( await ModelTipo.getTypeFilter(data.tipos) );
+      }else{
+        setTipos([]);
       }
     } catch (error) {
       console.error('Error al cargar jornada:', error);
@@ -112,20 +119,20 @@ const SolicitarTurno: React.FC = () => {
   const hora = ahora.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: false });
   const fechaTxt = fecha.charAt(0).toUpperCase() + fecha.slice(1);
 
-  const obtenerTurno = () => {
+  const getAppointment = () => {
     // TODO: crear el turno en el backend y navegar con su id
     // Para pasar datos a la siguiente vista usa query params o un estado global:
     // history.push(`/turno/mi-turno?tipo=${seleccion.letra}&celular=${celular}`);
     history.push('/turn/me');
-  };
 
-  const setCampo = <K extends keyof TurnFormData>(campo: K, valor: TurnFormData[K]) => {
-      setForm((f) => ({ ...f, [campo]: valor }));
-  }
+
+
+    console.log("form",form);
+  };
 
   return (
     <IonPage>
-      <IonContent className="on-content" scrollY={false}>
+      <IonContent className="on-content" scrollY={true}>
         <div className="on-kiosk">
           <header className="on-topbar">
             <strong>Onturn</strong>
@@ -141,6 +148,11 @@ const SolicitarTurno: React.FC = () => {
                       const currentSucursal = sucursales.find(s => s.id === Number(e.detail.value));
                       setSucursal({id: Number(e.detail.value), nombre: currentSucursal?.nombre ?? ''});
                       setCampo('sucursal_id', Number(e.detail.value));
+                      setCampo('documento', '');
+                      setCampo('nombres', '');
+                      setCampo('apellidos', '');
+                      setCampo('tipo_id', 0);
+                      setCampo('jornada_id', 0);
                     }
                   }
               >
@@ -158,21 +170,73 @@ const SolicitarTurno: React.FC = () => {
               Elige una opción para recibir tu turno. No necesitas registrarte.
             </p>
 
-            <div className="on-tipos">
-              {tipos.map((t) => (
-                <button
-                  key={t.id}
-                  className={`on-tipo ${form.tipo_id === t.id ? 'is-selected' : ''}`}
-                  onClick={() => setCampo('tipo_id', t.id)}
-                >
-                  <div className="on-tipo__letter">{t.prefijo}</div>
-                  <div>
-                    <strong>{t.nombre}</strong>
-                    <span>{t.descripcion}</span>
+              {tipos.length > 0 ? (
+                <>
+                  <div className="on-tipos">
+                    {
+                      tipos.map((t) => (
+                      
+                        <button
+                          key={t.id}
+                          className={`on-tipo ${form.tipo_id === t.id ? 'is-selected' : ''}`}
+                          onClick={() => setCampo('tipo_id', t.id)}
+                        >
+                          <div className="on-tipo__letter">{t.prefijo}</div>
+                          <div>
+                            <strong>{t.nombre}</strong>
+                            <span>{t.descripcion}</span>
+                          </div>
+                        </button>
+                      ))
+                    }
                   </div>
-                </button>
-              ))}
-            </div>
+                  { form.sucursal_id && form.jornada_id && form.tipo_id ? (
+                    <div className="on-card">
+                      <div className="on-grid--form on-field">
+                        <div className="on-field">
+                          <label className="on-label">Número de documento <span className="on-required-input">*</span></label>
+                          <IonInput
+                              inputMode="numeric"
+                              maxlength={10}
+                              className="on-input"
+                              placeholder="Identificación (*)"
+                              value={form.documento}
+                              onIonInput={(e) => setCampo('documento', e.detail.value ?? '')}
+                          />
+                        </div>
+                        <div className="on-field">
+                          <label className="on-label">Nombres <span className="on-required-input">*</span></label>
+                          <IonInput
+                              type="text" 
+                              className="on-input"
+                              placeholder="Nombres (*)"
+                              value={form.nombres}
+                              onIonInput={(e) => setCampo('nombres', e.detail.value ?? '')}
+                          />
+                        </div>
+                        <div className="on-field">
+                          <label className="on-label">Apellidos</label>
+                          <IonInput
+                              type="text" 
+                              className="on-input"
+                              placeholder="Apellidos (Opcional)"
+                              value={form.apellidos}
+                              onIonInput={(e) => setCampo('apellidos', e.detail.value ?? '')}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+                </>
+              ) : (
+                <div className="on-tipo--empty">
+                  <span>Seleccione una sucursal para ver los servicios de atención disponibles</span>
+                  <span className="on-tipo--empty-text">Version de pruebas - En produccion la sucursal ya esta asignada y oculta para la pantalla del cliente</span>
+                </div>
+              )}
+            
           </section>
 
           <footer className="on-footbar">
@@ -191,7 +255,9 @@ const SolicitarTurno: React.FC = () => {
                   onIonInput={(e) => setCelular(inputValue(e))}
                 />
               </div> */}
-              <IonButton className="on-btn on-btn--primary on-btn--lg" onClick={obtenerTurno}>
+              <IonButton className="on-btn on-btn--primary on-btn--lg" 
+                disabled={!form.sucursal_id || !form.jornada_id || !form.tipo_id || form.documento.length === 0 || form.nombres?.length === 0}
+                onClick={getAppointment}>
                 Obtener turno
               </IonButton>
             </div>
