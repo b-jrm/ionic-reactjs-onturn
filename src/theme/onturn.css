@@ -297,3 +297,52 @@ ion-toggle.on-toggle { --track-background: #8e98ae; --track-background-checked: 
   .on-queue__item:nth-child(n+4) { display: none; }
   .on-op-sticky { position: sticky; bottom: 0; padding: 12px 0 4px; background: linear-gradient(transparent, var(--on-bg) 30%); }
 }
+
+.on-debug{
+  width: 100%;
+  height: auto;
+  min-height: calc(100%);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  border-left: #1b2a45 5px solid;
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* translate: -50% -50%; o transform: translate(-50%, -50%); */
+  background-color: #101b2d;
+  color: #2fd07a;
+  font-size: 10px;;
+  text-align: left;
+  text-wrap: balance;
+
+  transition:
+    opacity 2s ease,
+    transform 2s ease,
+    visibility 2s ease;
+}
+
+.on-debug__row-toggle{
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  border-bottom: #1b2a45 5px solid;
+}
+
+.on-debug__btn-toggle-hide, .on-debug__btn-toggle-show{
+  font-size: 15px;
+}
+
+.on-debug__btn-toggle-show{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #101b2d;
+  color: #2fd07a;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}

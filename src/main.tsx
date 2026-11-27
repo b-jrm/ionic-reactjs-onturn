@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom/client';
 
 import App from './App';
 
+// import { ENV } from '../config/environment';
+
 // Estilos Ionic
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';

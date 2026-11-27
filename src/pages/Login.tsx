@@ -1,7 +1,8 @@
 // src/pages/Login.tsx
-import { IonButton, IonContent, IonInput, IonPage, useIonRouter, IonCard, IonCardContent } from '@ionic/react';
-import { useState } from 'react';
+import { IonButton, IonContent, IonInput, IonPage, useIonRouter } from '@ionic/react';
+import { useState, useEffect } from 'react';
 
+import { APP, ENV } from '../../config/environment';
 import { Model as ModelUsuario } from '../app/db/models/usuarios';
 import { inputValue } from '../utils/ionValue';
 
@@ -10,10 +11,19 @@ type Rol = 'Operador' | 'Administrador';
 const Login: React.FC = () => {
   const history = useIonRouter();
   const [rol, setRol] = useState<Rol>('Operador');
-  const [usuario, setUsuario] = useState('');
-  const [password, setPassword] = useState('');
+  const [usuario, setUsuario] = useState((ENV.debug ? 'operator1@onturn.co' : ''));
+  const [password, setPassword] = useState((ENV.debug ? 'operator1' : ''));
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    APP.setDebugData({
+        rol,
+        usuario,
+        password,
+        error
+      });
+  }, [rol, usuario, password, error]);
+  
   const ingresar = () => {
     setError('');
     // TODO: reemplazar por la autenticación real
@@ -59,13 +69,13 @@ const Login: React.FC = () => {
               <div className="on-segment">
                 <button
                   className={rol === 'Operador' ? 'is-active' : ''}
-                  onClick={() => setRol('Operador')}
+                  onClick={() => { setRol('Operador'); setError(''); if(ENV.debug){ setUsuario('operator1@onturn.co'); setPassword('operator1'); } }}
                 >
                   Operador
                 </button>
                 <button
                   className={rol === 'Administrador' ? 'is-active' : ''}
-                  onClick={() => setRol('Administrador')}
+                  onClick={() => { setRol('Administrador'); setError(''); if(ENV.debug){ setUsuario('admin@onturn.co'); setPassword('admin'); } }}
                 >
                   Administrador
                 </button>
@@ -77,7 +87,7 @@ const Login: React.FC = () => {
                   className="on-input"
                   placeholder="Correo electrónico"
                   value={usuario}
-                  onIonInput={(e) => setUsuario(inputValue(e))}
+                  onIonInput={(e) => { setUsuario(inputValue(e)); setError(''); }}
                 />
               </div>
 
@@ -88,7 +98,7 @@ const Login: React.FC = () => {
                   type="password" 
                   placeholder="Contraseña"
                   value={password}
-                  onIonInput={(e) => setPassword(inputValue(e))}
+                  onIonInput={(e) => { setPassword(inputValue(e)); setError(''); }}
                 />
               </div>
 
@@ -97,47 +107,6 @@ const Login: React.FC = () => {
               <IonButton className="on-btn on-btn--primary on-btn--block" onClick={ingresar}>
                 Ingresar
               </IonButton>
-
-              <IonCard className="on-field">
-                  <IonCardContent>
-                      <b>PRUEBAS ADMIN</b>
-                      <p><b>Usuario:&nbsp;</b>admin@onturn.co</p>
-                      <IonButton
-                          size="small"
-                          fill="outline"
-                          onClick={() => navigator.clipboard.writeText('admin@onturn.co')}
-                      >
-                          Copiar usuario admin
-                      </IonButton>
-                      <p><b>Clave:&nbsp;</b>admin</p>
-                      <IonButton
-                          size="small"
-                          fill="outline"
-                          onClick={() => navigator.clipboard.writeText('admin')}
-                      >
-                          Copiar clave admin
-                      </IonButton>
-                      <br />
-                      <b>PRUEBAS OPERADOR</b>
-                      <p><b>Usuario:&nbsp;</b>operator1@onturn.co</p>
-                      <IonButton
-                          size="small"
-                          fill="outline"
-                          onClick={() => navigator.clipboard.writeText('operator1@onturn.co')}
-                      >
-                          Copiar usuario operador
-                      </IonButton>
-                      <p><b>Clave:&nbsp;</b>operator1</p>
-                      <IonButton
-                          size="small"
-                          fill="outline"
-                          onClick={() => navigator.clipboard.writeText('operator1')}
-                      >
-                          Copiar clave operador
-                      </IonButton>
-                      {/* <IonButton color="primary" routerLink="manage/dashboard">Ir al dashboard administrativo</IonButton> */}
-                  </IonCardContent>
-              </IonCard>
 
               <hr className="on-divider" />
               <p className="on-muted" style={{ margin: 0 }}>

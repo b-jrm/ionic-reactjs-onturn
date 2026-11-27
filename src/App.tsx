@@ -17,6 +17,7 @@ import '@ionic/react/css/display.css';
 import './theme/onturn.css';
 
 // import { sqliteService } from './app/db/sqlite.service';
+import Debug from './components/Debug';
 import Branches from './pages/Admin/Branches';
 // import Dashboard from './pages/Admin/Dashboard';
 import Monitoring from './pages/Admin/Monitoring';
@@ -30,7 +31,6 @@ import RequestTurn from './pages/Client/RequestTurn';
 import Login from './pages/Login';
 import ServicePanel from './pages/Operator/ServicePanel';
 import RoomScreen from './pages/RoomScreen';
-
 
 setupIonicReact({ mode: 'md' });
 
@@ -80,6 +80,7 @@ const App: React.FC = () => {
             <Route exact path="/"><Redirect to="/login" /></Route>
           </IonRouterOutlet>
         </IonReactRouter>
+        <Debug/>
       </IonContent>
     </IonApp>
   );

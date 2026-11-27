@@ -18,6 +18,7 @@ interface Props {
 }
 
 const SideLayout: React.FC<Props> = ({ items, activePath, user, userOnTop, children }) => {
+
   const history = useIonRouter();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -25,8 +26,8 @@ const SideLayout: React.FC<Props> = ({ items, activePath, user, userOnTop, child
 
   useEffect(() => {
     const checkScreen = () => {
-      console.log("window.innerWidth <= 768", window.innerWidth <= 768);
-      setIsMobile(window.innerWidth <= 768);
+      console.log("window.innerWidth <= 768", document.documentElement.clientWidth <= 768);
+      setIsMobile(document.documentElement.clientWidth <= 768);
     };
 
     checkScreen();
@@ -84,7 +85,9 @@ const SideLayout: React.FC<Props> = ({ items, activePath, user, userOnTop, child
           Cerrar sesión
         </button>
       </aside>
-      <main>{children}</main>
+      <main>
+        {children}
+      </main>
     </div>
   );
 };
